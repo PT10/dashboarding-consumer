@@ -1,0 +1,173 @@
+[
+  {
+    "name": "Default dashboard",
+
+    "data": [
+      {
+        "cols": 7,
+        "rows": 3,
+        "y":0,
+        "x": 0,
+        "name": "Dataset",
+        "panelId": "panel_1",
+        "chartOptions": {
+          "source": "sonicwall",
+          "sourceType": "kafka",
+          "searchQuery": "stream | extend dummy = '1' | summarize count=count() by dummy",
+          "chartConfig": {
+            "legend": {},
+            "tooltip": {
+                "trigger": "axis",
+                "showContent": true
+            },
+            "xAxis": {"type": "time"},
+            "yAxis": {"gridIndex": 0},
+            "grid": {"top": "10%"},
+            "seriesMerge": true,
+            "uniqueMergeKeys": ["timestamp"],
+            "timeAxisSortField": "timestamp",
+            "series": [
+              {"type": "line", "connectNulls": true, "encode": {"x": "timestamp", "y": "sensor1"}},
+              {"type": "line", "connectNulls": true, "encode": {"x": "timestamp", "y": "sensor2"}}
+            ]
+          },
+          "dataset": {
+            "dimensions": ["timestamp", "sensor1", "sensor2"],
+            "source": []
+          }
+        }
+      }, {
+        "cols": 7, "rows": 3, "y": 0, "x": 7, "name": "Pie","panelId": "panel_2", "chartOptions": {
+        "source": "sonicwall",
+        "sourceType": "kafka",
+        "searchQuery": "stream | extend dummy = '1' | summarize count=count() by dummy",
+        "chartConfig": {
+            "seriesMerge" : true,
+            "uniqueMergeKeys" : [ "dummmy"],
+            "tooltip": {
+                "show": false
+            },
+            "legend": {
+                "show" : false
+            },
+            "series": [
+                {
+                    "name": "test",
+                    "type": "pie",
+                    "radius": ["40%", "70%"],
+                    "avoidLabelOverlap": false,
+                    "label": {
+                        "show": true,
+                        "position": "center",
+                        "formatter" : "{@count}",
+                        "fontSize": "80",
+                        "fontWeight": "bold"
+
+                    },
+                    "labelLine": {
+                        "show": false
+                    }
+                }
+            ]
+        },
+        "dataset" : {
+            "dimensions" : ["dummy", "count"],
+            "source" : [
+                { "dummy" : "1", "count" : 0 }
+                ]
+          }
+        }
+      },
+      {
+        "cols": 7,
+        "rows": 3,
+        "y": 3,
+        "x": 0,
+        "name": "Gauge",
+        "panelId": "panel_3",
+        "source": "sonicwall",
+        "sourceType": "kafka",
+        "chartOptions": {
+          "source": "test",
+          "sourceType": "kafka",
+          "searchQuery": "stream | extend dummy = '1' | summarize count=count() by dummy",
+          "chartConfig": {
+            "tooltip": {
+              "trigger": "item"
+            },
+            "legend": {
+              "top": "5%",
+              "left": "center"
+            },
+            "series": [
+              {
+                "type": "gauge",
+                "axisLine": {
+                  "lineStyle": {
+                    "width": 30,
+                    "color": [
+                      [
+                        0.3,
+                        "#67e0e3"
+                      ],
+                      [
+                        0.7,
+                        "#37a2da"
+                      ],
+                      [
+                        1,
+                        "#fd666d"
+                      ]
+                    ]
+                  }
+                },
+                "pointer": {
+                  "itemStyle": {
+                    "color": "auto"
+                  }
+                },
+                "axisTick": {
+                  "distance": -30,
+                  "length": 8,
+                  "lineStyle": {
+                    "color": "#fff",
+                    "width": 2
+                  }
+                },
+                "splitLine": {
+                  "distance": -30,
+                  "length": 0,
+                  "lineStyle": {
+                    "color": "#fff",
+                    "width": 4
+                  }
+                },
+                "axisLabel": {
+                  "color": "auto",
+                  "distance": 40,
+                  "fontSize": 20
+                },
+                "detail": {
+                  "valueAnimation": true,
+                  "formatter": "{value} km/h",
+                  "color": "auto"
+                }
+              }
+            ],
+            "seriesMerge": true
+          },
+          "dataset": {
+            "source": [
+              {
+                "value": 70
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "options": {
+      "default": true
+    }
+  }
+]

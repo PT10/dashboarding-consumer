@@ -1,0 +1,746 @@
+2021-03-17 11:30:48.087 INFO  Number of open requests on this node: 1 
+2021-03-17 11:44:23.853 INFO  Number of open requests on this node: 1 
+2021-03-17 11:45:01.041 INFO  Number of open requests on this node: 1 
+2021-03-17 11:46:44.447 INFO  Number of open requests on this node: 1 
+2021-03-17 11:46:44.456 INFO  Running panel id: undefined, query: "$var1", database: sonicwall, pivot: undefined, realTime: true 
+2021-03-17 11:47:29.882 INFO  Number of open requests on this node: 2 
+2021-03-17 11:47:29.888 INFO  Running panel id: undefined, query: "$var1", database: sonicwall, pivot: undefined, realTime: true 
+2021-03-17 11:48:22.118 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 11:48:22.118 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 11:48:37.936 INFO  Number of open requests on this node: 1 
+2021-03-17 11:48:46.299 INFO  Running panel id: undefined, query: "$var1", database: sonicwall, pivot: undefined, realTime: true 
+2021-03-17 12:11:09.007 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 12:39:15.960 INFO  Number of open requests on this node: 1 
+2021-03-17 12:39:28.974 INFO  Running panel id: undefined, query: "select * from *", database: sonicwall, pivot: undefined, realTime: true 
+2021-03-17 12:40:35.121 INFO  Number of open requests on this node: 2 
+2021-03-17 12:40:36.155 INFO  Running panel id: undefined, query: "select * from something", database: sonicwall, pivot: undefined, realTime: true 
+2021-03-17 12:41:16.008 INFO  Number of open requests on this node: 3 
+2021-03-17 12:41:33.994 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\\\w+\\\\s+\\\\d+\\\\s+\\\\d+:\\\\d+:\\\\d+\\\\s+[\\\\w\\\\.]+\\\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg | limit 2 ", database: sonicwall, pivot: undefined, realTime: true 
+2021-03-17 12:42:26.129 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 12:42:26.129 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 12:42:26.129 INFO  Canceled handler 
+2021-03-17 12:42:26.130 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 12:44:57.495 INFO  Number of open requests on this node: 1 
+2021-03-17 12:44:59.160 INFO  Running panel id: undefined, query: "index | project line | limit 2", database: sonicwall, pivot: undefined, realTime: false 
+2021-03-17 12:45:41.567 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 12:45:41.567 INFO  Canceled handler 
+2021-03-17 12:46:10.745 INFO  Number of open requests on this node: 1 
+2021-03-17 12:46:19.703 INFO  Running panel id: undefined, query: "select * from *", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 12:46:36.326 INFO  Number of open requests on this node: 2 
+2021-03-17 12:46:36.349 INFO  Running panel id: undefined, query: "index | project line | limit 2", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 12:57:25.718 INFO  Client has disconnected. Reason: 1006 Description: Connection dropped by remote peer. 
+2021-03-17 12:57:25.722 INFO  Client has disconnected. Reason: 1006 Description: Connection dropped by remote peer. 
+2021-03-17 12:57:25.722 INFO  Canceled handler 
+2021-03-17 14:36:34.712 INFO  Number of open requests on this node: 1 
+2021-03-17 14:36:34.721 INFO  Running panel id: undefined, query: "select * from *", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 14:37:22.945 INFO  Number of open requests on this node: 1 
+2021-03-17 14:37:22.953 INFO  Running panel id: undefined, query: "select * from *", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 14:37:50.784 INFO  Number of open requests on this node: 2 
+2021-03-17 14:37:50.787 INFO  Running panel id: undefined, query: "index | project line | limit 2", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 14:42:03.507 INFO  Number of open requests on this node: 1 
+2021-03-17 14:42:03.514 INFO  Running panel id: undefined, query: "index | project line | limit 2", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 14:43:16.349 INFO  Number of open requests on this node: 2 
+2021-03-17 14:43:16.352 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\\\w+\\\\s+\\\\d+\\\\s+\\\\d+:\\\\d+:\\\\d+\\\\s+[\\\\w\\\\.]+\\\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg | limit 2 ", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 14:44:53.249 INFO  Number of open requests on this node: 3 
+2021-03-17 14:44:53.251 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\\\w+\\\\s+\\\\d+\\\\s+\\\\d+:\\\\d+:\\\\d+\\\\s+[\\\\w\\\\.]+\\\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 14:45:18.278 INFO  Number of open requests on this node: 1 
+2021-03-17 14:45:18.287 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\\\w+\\\\s+\\\\d+\\\\s+\\\\d+:\\\\d+:\\\\d+\\\\s+[\\\\w\\\\.]+\\\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 14:45:45.914 INFO  Number of open requests on this node: 1 
+2021-03-17 14:45:45.922 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\\\w+\\\\s+\\\\d+\\\\s+\\\\d+:\\\\d+:\\\\d+\\\\s+[\\\\w\\\\.]+\\\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 14:48:58.218 INFO  Number of open requests on this node: 1 
+2021-03-17 14:48:58.226 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 16:28:22.102 INFO  Number of open requests on this node: 1 
+2021-03-17 16:28:22.110 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 16:35:23.068 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 16:35:23.068 INFO  Canceled handler 
+2021-03-17 16:35:42.505 INFO  Number of open requests on this node: 1 
+2021-03-17 16:35:42.511 INFO  Running panel id: undefined, query: "select * from *", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 16:35:50.083 INFO  Number of open requests on this node: 2 
+2021-03-17 16:35:50.099 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 16:35:50.274 INFO  Client has disconnected. Reason: 1006 Description: Connection dropped by remote peer. 
+2021-03-17 16:35:50.274 INFO  Canceled handler 
+2021-03-17 16:36:11.707 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 16:36:39.395 INFO  Number of open requests on this node: 1 
+2021-03-17 16:36:39.422 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 16:36:49.410 INFO  Client has disconnected. Reason: 1006 Description: Connection dropped by remote peer. 
+2021-03-17 16:36:49.410 INFO  Canceled handler 
+2021-03-17 16:39:34.771 INFO  Number of open requests on this node: 1 
+2021-03-17 16:39:34.774 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 16:40:10.075 INFO  Client has disconnected. Reason: 1006 Description: Connection dropped by remote peer. 
+2021-03-17 16:40:10.075 INFO  Canceled handler 
+2021-03-17 16:40:25.381 INFO  Number of open requests on this node: 1 
+2021-03-17 16:40:25.385 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 16:40:43.963 INFO  Client has disconnected. Reason: 1006 Description: Connection dropped by remote peer. 
+2021-03-17 16:40:43.963 INFO  Canceled handler 
+2021-03-17 16:41:43.320 INFO  Number of open requests on this node: 1 
+2021-03-17 16:41:43.325 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 16:41:43.462 INFO  Client has disconnected. Reason: 1006 Description: Connection dropped by remote peer. 
+2021-03-17 16:41:43.462 INFO  Canceled handler 
+2021-03-17 16:42:07.825 INFO  Number of open requests on this node: 1 
+2021-03-17 16:42:07.829 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 16:42:34.834 INFO  Client has disconnected. Reason: 1006 Description: Connection dropped by remote peer. 
+2021-03-17 16:42:34.834 INFO  Canceled handler 
+2021-03-17 16:42:43.409 INFO  Number of open requests on this node: 1 
+2021-03-17 16:42:43.411 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 16:43:35.934 INFO  Number of open requests on this node: 2 
+2021-03-17 16:43:35.944 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 16:45:20.438 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 16:45:20.438 INFO  Canceled handler 
+2021-03-17 16:45:20.438 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 16:45:20.438 INFO  Canceled handler 
+2021-03-17 16:45:32.375 INFO  Number of open requests on this node: 1 
+2021-03-17 16:45:32.377 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 16:46:48.295 INFO  Number of open requests on this node: 2 
+2021-03-17 16:46:48.302 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 16:48:04.976 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 16:48:04.976 INFO  Canceled handler 
+2021-03-17 16:48:04.976 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 16:48:04.976 INFO  Canceled handler 
+2021-03-17 16:48:16.394 INFO  Number of open requests on this node: 1 
+2021-03-17 16:48:16.402 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 16:48:47.169 INFO  Number of open requests on this node: 2 
+2021-03-17 16:48:47.172 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg | limit 2", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 16:52:33.596 INFO  Number of open requests on this node: 3 
+2021-03-17 16:52:33.598 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg | limit 2", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 16:53:23.530 INFO  Number of open requests on this node: 4 
+2021-03-17 16:53:23.531 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 16:53:37.700 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 16:53:37.700 INFO  Canceled handler 
+2021-03-17 16:53:37.701 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 16:53:37.701 INFO  Canceled handler 
+2021-03-17 16:53:37.701 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 16:53:37.701 INFO  Canceled handler 
+2021-03-17 16:53:37.701 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 16:53:37.701 INFO  Canceled handler 
+2021-03-17 16:53:47.988 INFO  Number of open requests on this node: 1 
+2021-03-17 16:53:47.998 INFO  Running panel id: undefined, query: "select * from *", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 16:53:49.496 INFO  Number of open requests on this node: 2 
+2021-03-17 16:53:49.498 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 16:54:07.077 INFO  Number of open requests on this node: 3 
+2021-03-17 16:54:07.079 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg | limit 5", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 17:17:52.384 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 17:17:52.387 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 17:17:52.387 INFO  Canceled handler 
+2021-03-17 17:17:52.387 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 17:17:52.387 INFO  Canceled handler 
+2021-03-17 17:18:28.172 INFO  Number of open requests on this node: 1 
+2021-03-17 17:18:28.175 INFO  Running panel id: undefined, query: "select * from *", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 17:18:30.011 INFO  Number of open requests on this node: 2 
+2021-03-17 17:18:30.014 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg | summarize by count", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 17:18:43.584 INFO  Number of open requests on this node: 3 
+2021-03-17 17:18:43.587 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg | summarize by count", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 17:24:12.721 INFO  Number of open requests on this node: 4 
+2021-03-17 17:25:13.667 INFO  Number of open requests on this node: 1 
+2021-03-17 17:25:13.676 INFO  Running panel id: undefined, query: "search in (index) 'line:\\\"Connection\\\"' | extend sent_rcvd=extract_all(@'sent=(\\d+).+rcvd=(\\d+)', line) | project sent_rcvd", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 17:27:37.747 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 17:27:37.747 INFO  Canceled handler 
+2021-03-17 17:27:56.104 INFO  Number of open requests on this node: 1 
+2021-03-17 17:27:56.109 INFO  Running panel id: undefined, query: "select * from *", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 17:27:59.532 INFO  Number of open requests on this node: 2 
+2021-03-17 17:27:59.536 INFO  Running panel id: undefined, query: "search in (index) 'line:\\\"Connection\\\"' | extend sent_rcvd=extract_all(@'sent=(\\d+).+rcvd=(\\d+)', line) | project sent_rcvd", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 17:28:51.243 INFO  Number of open requests on this node: 3 
+2021-03-17 17:31:26.560 INFO  Number of open requests on this node: 1 
+2021-03-17 17:31:26.567 INFO  Running panel id: undefined, query: "index | extend hour = floor(StartTime % 1d , 1h) | summarize event_count=count() by fivemin=floor(StartTime, 5m)", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 17:31:59.525 INFO  Number of open requests on this node: 2 
+2021-03-17 17:31:59.528 INFO  Running panel id: undefined, query: "index | extend hour = floor(StartTime % 1d , 1h) | summarize event_count=count() by fivemin=floor(StartTime, 5m)", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 17:32:16.682 INFO  Number of open requests on this node: 3 
+2021-03-17 17:32:16.689 INFO  Running panel id: undefined, query: "index | extend hour = floor(StartTime % 1d , 1h) | summarize event_count=count() by fivemin=floor(StartTime, 5m)", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 17:33:24.721 INFO  Number of open requests on this node: 4 
+2021-03-17 17:33:24.727 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg | summarize event_count=count() by fivemin=floor(StartTime, 5m)", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 17:40:28.992 INFO  Number of open requests on this node: 5 
+2021-03-17 17:40:28.996 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg | summarize event_count=count() by fivemin=floor(StartTime, 5m)", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 17:42:40.617 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 17:42:40.617 INFO  Canceled handler 
+2021-03-17 17:42:40.618 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 17:42:40.618 INFO  Canceled handler 
+2021-03-17 17:42:40.618 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 17:42:40.618 INFO  Canceled handler 
+2021-03-17 17:42:40.619 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 17:42:40.619 INFO  Canceled handler 
+2021-03-17 17:42:40.619 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 17:42:40.619 INFO  Canceled handler 
+2021-03-17 17:43:28.450 INFO  Number of open requests on this node: 1 
+2021-03-17 17:43:28.452 INFO  Running panel id: undefined, query: "select * from *", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 17:43:30.334 INFO  Number of open requests on this node: 2 
+2021-03-17 17:43:30.339 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg | summarize event_count=count() by fivemin=floor(StartTime, 5m)", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 17:44:15.051 INFO  Number of open requests on this node: 3 
+2021-03-17 17:44:15.054 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 17:44:38.557 INFO  Number of open requests on this node: 4 
+2021-03-17 17:44:38.559 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 17:44:56.712 INFO  Number of open requests on this node: 5 
+2021-03-17 17:44:56.714 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg | summarize event_count=count() by fivemin=floor(StartTime, 5m)", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 17:45:05.743 INFO  Number of open requests on this node: 6 
+2021-03-17 17:45:05.745 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg | summarize event_count=count() by fivemin=floor(StartTime, 1s)", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 17:45:25.018 INFO  Number of open requests on this node: 7 
+2021-03-17 17:45:25.020 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg | summarize event_count=count() by fivemin=floor(StartTime, 1m)", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 17:45:52.818 INFO  Number of open requests on this node: 8 
+2021-03-17 17:45:52.820 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg ", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 17:47:03.513 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 17:47:03.513 INFO  Canceled handler 
+2021-03-17 17:47:03.514 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 17:47:03.514 INFO  Canceled handler 
+2021-03-17 17:47:03.515 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 17:47:03.515 INFO  Canceled handler 
+2021-03-17 17:47:03.515 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 17:47:03.515 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 17:47:03.515 INFO  Canceled handler 
+2021-03-17 17:47:03.516 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 17:47:03.516 INFO  Canceled handler 
+2021-03-17 17:47:03.516 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 17:47:03.516 INFO  Canceled handler 
+2021-03-17 17:47:03.516 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 17:47:03.516 INFO  Canceled handler 
+2021-03-17 17:47:34.400 INFO  Number of open requests on this node: 1 
+2021-03-17 17:47:34.402 INFO  Running panel id: undefined, query: "select * from *", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 17:47:36.178 INFO  Number of open requests on this node: 2 
+2021-03-17 17:47:36.180 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 17:49:45.853 INFO  Number of open requests on this node: 3 
+2021-03-17 17:49:45.855 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg | limit 5", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 17:51:01.080 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 17:51:01.080 INFO  Canceled handler 
+2021-03-17 17:51:01.081 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 17:51:01.081 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 17:51:01.081 INFO  Canceled handler 
+2021-03-17 18:01:46.411 INFO  Number of open requests on this node: 1 
+2021-03-17 18:01:46.415 INFO  Running panel id: undefined, query: "select * from *", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:01:57.216 INFO  Number of open requests on this node: 2 
+2021-03-17 18:01:57.243 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:02:07.067 INFO  Number of open requests on this node: 3 
+2021-03-17 18:02:07.094 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:02:19.014 INFO  Number of open requests on this node: 4 
+2021-03-17 18:02:19.039 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg | limit 2", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:06:20.708 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:06:20.708 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:06:20.708 INFO  Canceled handler 
+2021-03-17 18:06:20.709 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:06:20.709 INFO  Canceled handler 
+2021-03-17 18:06:20.710 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:06:20.710 INFO  Canceled handler 
+2021-03-17 18:08:59.170 INFO  Number of open requests on this node: 1 
+2021-03-17 18:08:59.173 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:09:10.686 INFO  Number of open requests on this node: 2 
+2021-03-17 18:09:10.694 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg | limit 5", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:09:18.953 INFO  Number of open requests on this node: 3 
+2021-03-17 18:09:18.961 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst,  message=msg | limit 5", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:09:23.188 INFO  Number of open requests on this node: 4 
+2021-03-17 18:09:23.196 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg | limit 5", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:09:42.078 INFO  Number of open requests on this node: 5 
+2021-03-17 18:09:42.081 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg | ", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:09:43.919 INFO  Number of open requests on this node: 6 
+2021-03-17 18:09:43.924 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg | ", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:09:59.883 INFO  Number of open requests on this node: 7 
+2021-03-17 18:09:59.886 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg | summarize event_count=count() by fivemin=floor(StartTime, 5m)", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:10:25.386 INFO  Number of open requests on this node: 8 
+2021-03-17 18:10:25.397 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg | summarize event_count=count() by fivemin=floor(StartTime, 5m)", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:12:04.704 INFO  Number of open requests on this node: 1 
+2021-03-17 18:12:04.725 INFO  Number of open requests on this node: 2 
+2021-03-17 18:12:04.728 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg | limit 100", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:12:05.359 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg | limit 100", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:14:16.811 INFO  Number of open requests on this node: 1 
+2021-03-17 18:14:16.819 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg | limit 100", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:14:19.335 INFO  Number of open requests on this node: 2 
+2021-03-17 18:14:19.355 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg | limit 100", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:14:30.393 INFO  Number of open requests on this node: 3 
+2021-03-17 18:14:30.395 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg | limit 5", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:14:40.396 INFO  Number of open requests on this node: 4 
+2021-03-17 18:14:40.399 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg | limit 10", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:14:43.424 INFO  Number of open requests on this node: 5 
+2021-03-17 18:14:43.427 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg | limit 100", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:14:47.425 INFO  Number of open requests on this node: 6 
+2021-03-17 18:14:47.427 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg | limit 100", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:14:53.272 INFO  Number of open requests on this node: 7 
+2021-03-17 18:14:53.274 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg | limit 10", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:14:56.481 INFO  Number of open requests on this node: 8 
+2021-03-17 18:14:56.486 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg | limit 10", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:15:12.808 INFO  Number of open requests on this node: 9 
+2021-03-17 18:15:12.819 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg | ", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:15:21.174 INFO  Number of open requests on this node: 10 
+2021-03-17 18:15:21.226 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg | ", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:15:32.459 INFO  Number of open requests on this node: 11 
+2021-03-17 18:15:32.461 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg | summarize event_count=count() by fivemin=floor(StartTime, 5m)", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:16:29.201 INFO  Number of open requests on this node: 12 
+2021-03-17 18:16:29.208 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg | summarize event_count=count() by fivemin=floor(StartTime, 1m)", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:16:37.366 INFO  Number of open requests on this node: 13 
+2021-03-17 18:16:37.373 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg limit 10", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:17:06.737 INFO  Number of open requests on this node: 14 
+2021-03-17 18:17:06.740 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg limit 10", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:17:18.974 INFO  Number of open requests on this node: 15 
+2021-03-17 18:17:18.976 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:17:22.045 INFO  Number of open requests on this node: 16 
+2021-03-17 18:17:22.062 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:17:46.976 INFO  Number of open requests on this node: 17 
+2021-03-17 18:17:46.979 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg | summarize event_count=count() by fivemin=floor(StartTime, 5m)", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:17:48.858 INFO  Number of open requests on this node: 18 
+2021-03-17 18:17:48.890 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg | summarize event_count=count() by fivemin=floor(StartTime, 5m)", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:18:09.617 INFO  Number of open requests on this node: 19 
+2021-03-17 18:18:09.619 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg | summarize event_count=count() by fivemin=floor(StartTime, 5m)", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:19:17.879 INFO  Number of open requests on this node: 20 
+2021-03-17 18:19:17.882 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg | summarize event_count=count() by fivemin=floor(StartTime, 5m)", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:19:34.203 INFO  Number of open requests on this node: 21 
+2021-03-17 18:19:34.205 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg | ", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:19:36.813 INFO  Number of open requests on this node: 22 
+2021-03-17 18:19:36.816 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:19:39.730 INFO  Number of open requests on this node: 23 
+2021-03-17 18:19:39.733 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:19:42.131 INFO  Number of open requests on this node: 24 
+2021-03-17 18:19:42.135 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:19:49.337 INFO  Number of open requests on this node: 25 
+2021-03-17 18:19:49.341 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:19:52.273 INFO  Number of open requests on this node: 26 
+2021-03-17 18:19:52.277 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:20:02.702 INFO  Number of open requests on this node: 27 
+2021-03-17 18:20:02.732 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:20:10.195 INFO  Number of open requests on this node: 28 
+2021-03-17 18:20:10.198 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:20:17.192 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:20:17.192 INFO  Canceled handler 
+2021-03-17 18:20:17.194 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:20:17.194 INFO  Canceled handler 
+2021-03-17 18:20:17.194 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:20:17.194 INFO  Canceled handler 
+2021-03-17 18:20:17.195 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:20:17.195 INFO  Canceled handler 
+2021-03-17 18:20:17.198 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:20:17.198 INFO  Canceled handler 
+2021-03-17 18:20:17.198 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:20:17.198 INFO  Canceled handler 
+2021-03-17 18:20:17.198 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:20:17.198 INFO  Canceled handler 
+2021-03-17 18:20:17.199 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:20:17.199 INFO  Canceled handler 
+2021-03-17 18:20:17.202 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:20:17.202 INFO  Canceled handler 
+2021-03-17 18:20:17.202 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:20:17.202 INFO  Canceled handler 
+2021-03-17 18:20:17.203 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:20:17.203 INFO  Canceled handler 
+2021-03-17 18:20:17.204 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:20:17.204 INFO  Canceled handler 
+2021-03-17 18:20:17.205 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:20:17.205 INFO  Canceled handler 
+2021-03-17 18:20:17.206 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:20:17.206 INFO  Canceled handler 
+2021-03-17 18:20:17.206 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:20:17.206 INFO  Canceled handler 
+2021-03-17 18:20:17.206 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:20:17.206 INFO  Canceled handler 
+2021-03-17 18:20:17.206 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:20:17.206 INFO  Canceled handler 
+2021-03-17 18:20:17.206 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:20:17.206 INFO  Canceled handler 
+2021-03-17 18:20:17.207 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:20:17.207 INFO  Canceled handler 
+2021-03-17 18:20:17.207 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:20:17.207 INFO  Canceled handler 
+2021-03-17 18:20:17.207 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:20:17.207 INFO  Canceled handler 
+2021-03-17 18:20:17.207 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:20:17.207 INFO  Canceled handler 
+2021-03-17 18:20:17.208 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:20:17.208 INFO  Canceled handler 
+2021-03-17 18:20:17.208 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:20:17.208 INFO  Canceled handler 
+2021-03-17 18:20:17.208 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:20:17.208 INFO  Canceled handler 
+2021-03-17 18:20:17.208 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:20:17.208 INFO  Canceled handler 
+2021-03-17 18:20:17.209 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:20:17.209 INFO  Canceled handler 
+2021-03-17 18:20:17.215 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:20:17.215 INFO  Canceled handler 
+2021-03-17 18:20:24.775 INFO  Number of open requests on this node: 1 
+2021-03-17 18:20:24.777 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:20:42.728 INFO  Number of open requests on this node: 2 
+2021-03-17 18:20:42.730 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:20:49.969 INFO  Number of open requests on this node: 3 
+2021-03-17 18:20:49.971 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg | ", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:20:54.972 INFO  Number of open requests on this node: 4 
+2021-03-17 18:20:54.974 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg | limit 2", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:21:03.991 INFO  Number of open requests on this node: 5 
+2021-03-17 18:21:03.993 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg | limit 1", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:21:08.934 INFO  Number of open requests on this node: 6 
+2021-03-17 18:21:08.937 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg | limit 10", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:21:16.968 INFO  Number of open requests on this node: 7 
+2021-03-17 18:21:16.971 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg | limit 100", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:21:21.656 INFO  Number of open requests on this node: 8 
+2021-03-17 18:21:21.683 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg | limit 100", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:22:08.510 INFO  Number of open requests on this node: 9 
+2021-03-17 18:22:08.513 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg | summarize by count()", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:22:11.771 INFO  Number of open requests on this node: 10 
+2021-03-17 18:22:11.773 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg | summarize by count", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:22:19.816 INFO  Number of open requests on this node: 11 
+2021-03-17 18:22:19.818 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg | summarize by count=count()", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:22:26.763 INFO  Number of open requests on this node: 12 
+2021-03-17 18:22:26.765 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg | summarize count=count()", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:24:10.126 INFO  Number of open requests on this node: 13 
+2021-03-17 18:24:10.130 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg | summarize count=count()", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:24:12.789 INFO  Number of open requests on this node: 14 
+2021-03-17 18:24:12.814 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg | summarize count=count()", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:26:05.962 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:26:05.962 INFO  Canceled handler 
+2021-03-17 18:26:05.963 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:26:05.963 INFO  Canceled handler 
+2021-03-17 18:26:05.963 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:26:05.963 INFO  Canceled handler 
+2021-03-17 18:26:05.964 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:26:05.964 INFO  Canceled handler 
+2021-03-17 18:26:05.964 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:26:05.964 INFO  Canceled handler 
+2021-03-17 18:26:05.965 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:26:05.965 INFO  Canceled handler 
+2021-03-17 18:26:05.965 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:26:05.965 INFO  Canceled handler 
+2021-03-17 18:26:05.965 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:26:05.965 INFO  Canceled handler 
+2021-03-17 18:26:05.969 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:26:05.969 INFO  Canceled handler 
+2021-03-17 18:26:05.969 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:26:05.969 INFO  Canceled handler 
+2021-03-17 18:26:05.970 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:26:05.970 INFO  Canceled handler 
+2021-03-17 18:26:05.970 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:26:05.970 INFO  Canceled handler 
+2021-03-17 18:26:05.970 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:26:05.970 INFO  Canceled handler 
+2021-03-17 18:26:05.971 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:26:05.971 INFO  Canceled handler 
+2021-03-17 18:26:36.255 INFO  Number of open requests on this node: 1 
+2021-03-17 18:26:36.257 INFO  Running panel id: undefined, query: "index", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:27:04.447 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:27:04.447 INFO  Canceled handler 
+2021-03-17 18:27:44.254 INFO  Number of open requests on this node: 1 
+2021-03-17 18:27:44.256 INFO  Running panel id: undefined, query: "index", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:27:55.290 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:27:55.290 INFO  Canceled handler 
+2021-03-17 18:27:59.089 INFO  Number of open requests on this node: 1 
+2021-03-17 18:27:59.091 INFO  Running panel id: undefined, query: "test", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:28:11.826 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:28:16.751 INFO  Number of open requests on this node: 1 
+2021-03-17 18:28:16.760 INFO  Running panel id: undefined, query: "index", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:29:18.061 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:29:18.061 INFO  Canceled handler 
+2021-03-17 18:35:42.133 INFO  Number of open requests on this node: 1 
+2021-03-17 18:35:42.136 INFO  Running panel id: undefined, query: "indexundefined", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:35:42.170 INFO  Number of open requests on this node: 2 
+2021-03-17 18:35:42.172 INFO  Running panel id: undefined, query: "index| extend dummy = '1' | summarize count=count() by dummy", database: sonicwall, pivot: false, realTime: undefined 
+2021-03-17 18:36:02.904 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:36:02.905 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:36:02.905 INFO  Canceled handler 
+2021-03-17 18:36:08.529 INFO  Number of open requests on this node: 1 
+2021-03-17 18:36:08.536 INFO  Running panel id: undefined, query: "index", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:36:08.547 INFO  Number of open requests on this node: 2 
+2021-03-17 18:36:08.549 INFO  Running panel id: undefined, query: "index| extend dummy = '1' | summarize count=count() by dummy", database: sonicwall, pivot: false, realTime: undefined 
+2021-03-17 18:36:29.015 INFO  Number of open requests on this node: 3 
+2021-03-17 18:36:29.017 INFO  Running panel id: undefined, query: "index | limit 5", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:36:29.032 INFO  Number of open requests on this node: 4 
+2021-03-17 18:36:29.033 INFO  Running panel id: undefined, query: "index | limit 5| extend dummy = '1' | summarize count=count() by dummy", database: sonicwall, pivot: false, realTime: undefined 
+2021-03-17 18:36:33.675 INFO  Number of open requests on this node: 5 
+2021-03-17 18:36:33.679 INFO  Running panel id: undefined, query: "index | limit 5", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:36:33.697 INFO  Number of open requests on this node: 6 
+2021-03-17 18:36:33.699 INFO  Running panel id: undefined, query: "index | limit 5| extend dummy = '1' | summarize count=count() by dummy", database: sonicwall, pivot: false, realTime: undefined 
+2021-03-17 18:36:45.099 INFO  Number of open requests on this node: 7 
+2021-03-17 18:36:45.101 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:36:45.215 INFO  Number of open requests on this node: 8 
+2021-03-17 18:36:45.308 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg| extend dummy = '1' | summarize count=count() by dummy", database: sonicwall, pivot: false, realTime: undefined 
+2021-03-17 18:37:32.233 INFO  Number of open requests on this node: 9 
+2021-03-17 18:37:32.241 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:37:32.385 INFO  Number of open requests on this node: 10 
+2021-03-17 18:37:32.387 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg| extend dummy = '1' | summarize count=count() by dummy", database: sonicwall, pivot: false, realTime: undefined 
+2021-03-17 18:37:35.355 INFO  Number of open requests on this node: 11 
+2021-03-17 18:37:35.357 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:37:35.485 INFO  Number of open requests on this node: 12 
+2021-03-17 18:37:35.487 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg| extend dummy = '1' | summarize count=count() by dummy", database: sonicwall, pivot: false, realTime: undefined 
+2021-03-17 18:38:05.501 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:38:05.501 INFO  Canceled handler 
+2021-03-17 18:38:05.504 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:38:05.504 INFO  Canceled handler 
+2021-03-17 18:38:05.504 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:38:05.504 INFO  Canceled handler 
+2021-03-17 18:38:05.504 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:38:05.504 INFO  Canceled handler 
+2021-03-17 18:38:05.505 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:38:05.505 INFO  Canceled handler 
+2021-03-17 18:38:05.506 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:38:05.506 INFO  Canceled handler 
+2021-03-17 18:38:05.506 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:38:05.506 INFO  Canceled handler 
+2021-03-17 18:38:05.514 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:38:05.514 INFO  Canceled handler 
+2021-03-17 18:38:05.515 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:38:05.515 INFO  Canceled handler 
+2021-03-17 18:38:05.515 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:38:05.515 INFO  Canceled handler 
+2021-03-17 18:38:05.515 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:38:05.515 INFO  Canceled handler 
+2021-03-17 18:38:05.516 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:38:05.516 INFO  Canceled handler 
+2021-03-17 18:38:14.225 INFO  Number of open requests on this node: 1 
+2021-03-17 18:38:14.229 INFO  Running panel id: undefined, query: "index", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:38:14.238 INFO  Number of open requests on this node: 2 
+2021-03-17 18:38:14.239 INFO  Running panel id: undefined, query: "index| extend dummy = '1' | summarize count=count() by dummy", database: sonicwall, pivot: false, realTime: undefined 
+2021-03-17 18:38:25.533 INFO  Number of open requests on this node: 3 
+2021-03-17 18:38:25.536 INFO  Running panel id: undefined, query: "index | limit 5", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:38:25.546 INFO  Number of open requests on this node: 4 
+2021-03-17 18:38:25.548 INFO  Running panel id: undefined, query: "index | limit 5| extend dummy = '1' | summarize count=count() by dummy", database: sonicwall, pivot: false, realTime: undefined 
+2021-03-17 18:38:51.303 INFO  Number of open requests on this node: 5 
+2021-03-17 18:38:51.306 INFO  Running panel id: undefined, query: "index | limit 5", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:38:51.320 INFO  Number of open requests on this node: 6 
+2021-03-17 18:38:51.322 INFO  Running panel id: undefined, query: "index | limit 5| extend dummy = '1' | summarize count=count() by dummy", database: sonicwall, pivot: false, realTime: undefined 
+2021-03-17 18:38:53.680 INFO  Number of open requests on this node: 7 
+2021-03-17 18:38:53.685 INFO  Running panel id: undefined, query: "index | limit 5", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:38:53.701 INFO  Number of open requests on this node: 8 
+2021-03-17 18:38:53.704 INFO  Running panel id: undefined, query: "index | limit 5| extend dummy = '1' | summarize count=count() by dummy", database: sonicwall, pivot: false, realTime: undefined 
+2021-03-17 18:39:06.609 INFO  Number of open requests on this node: 9 
+2021-03-17 18:39:06.611 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:39:06.716 INFO  Number of open requests on this node: 10 
+2021-03-17 18:39:06.718 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg| extend dummy = '1' | summarize count=count() by dummy", database: sonicwall, pivot: false, realTime: undefined 
+2021-03-17 18:40:21.941 INFO  Number of open requests on this node: 11 
+2021-03-17 18:40:21.943 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:40:22.105 INFO  Number of open requests on this node: 12 
+2021-03-17 18:40:22.106 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg| extend dummy = '1' | summarize count=count() by dummy", database: sonicwall, pivot: false, realTime: undefined 
+2021-03-17 18:40:26.550 INFO  Number of open requests on this node: 13 
+2021-03-17 18:40:26.556 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:40:26.684 INFO  Number of open requests on this node: 14 
+2021-03-17 18:40:26.686 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg| extend dummy = '1' | summarize count=count() by dummy", database: sonicwall, pivot: false, realTime: undefined 
+2021-03-17 18:40:29.107 INFO  Number of open requests on this node: 15 
+2021-03-17 18:40:29.114 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:40:29.215 INFO  Number of open requests on this node: 16 
+2021-03-17 18:40:29.217 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, destination=dst, source=src, message=msg| extend dummy = '1' | summarize count=count() by dummy", database: sonicwall, pivot: false, realTime: undefined 
+2021-03-17 18:41:23.394 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:41:23.394 INFO  Canceled handler 
+2021-03-17 18:41:23.397 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:41:23.397 INFO  Canceled handler 
+2021-03-17 18:41:23.398 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:41:23.398 INFO  Canceled handler 
+2021-03-17 18:41:23.398 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:41:23.398 INFO  Canceled handler 
+2021-03-17 18:41:23.398 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:41:23.398 INFO  Canceled handler 
+2021-03-17 18:41:23.398 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:41:23.398 INFO  Canceled handler 
+2021-03-17 18:41:23.398 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:41:23.398 INFO  Canceled handler 
+2021-03-17 18:41:23.399 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:41:23.399 INFO  Canceled handler 
+2021-03-17 18:41:23.402 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:41:23.402 INFO  Canceled handler 
+2021-03-17 18:41:23.402 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:41:23.402 INFO  Canceled handler 
+2021-03-17 18:41:23.403 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:41:23.403 INFO  Canceled handler 
+2021-03-17 18:41:23.403 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:41:23.403 INFO  Canceled handler 
+2021-03-17 18:41:23.403 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:41:23.403 INFO  Canceled handler 
+2021-03-17 18:41:23.403 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:41:23.403 INFO  Canceled handler 
+2021-03-17 18:41:23.403 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:41:23.403 INFO  Canceled handler 
+2021-03-17 18:41:23.404 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:41:23.404 INFO  Canceled handler 
+2021-03-17 18:41:32.099 INFO  Number of open requests on this node: 1 
+2021-03-17 18:41:32.103 INFO  Running panel id: undefined, query: "index", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:41:32.132 INFO  Number of open requests on this node: 2 
+2021-03-17 18:41:32.134 INFO  Running panel id: undefined, query: "index| extend dummy = '1' | summarize count=count() by dummy", database: sonicwall, pivot: false, realTime: undefined 
+2021-03-17 18:41:36.618 INFO  Number of open requests on this node: 3 
+2021-03-17 18:41:36.621 INFO  Running panel id: undefined, query: "index", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:41:36.630 INFO  Number of open requests on this node: 4 
+2021-03-17 18:41:36.632 INFO  Running panel id: undefined, query: "index| extend dummy = '1' | summarize count=count() by dummy", database: sonicwall, pivot: false, realTime: undefined 
+2021-03-17 18:41:44.318 INFO  Number of open requests on this node: 5 
+2021-03-17 18:41:44.320 INFO  Running panel id: undefined, query: "index", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:41:44.329 INFO  Number of open requests on this node: 6 
+2021-03-17 18:41:44.330 INFO  Running panel id: undefined, query: "index| extend dummy = '1' | summarize count=count() by dummy", database: sonicwall, pivot: false, realTime: undefined 
+2021-03-17 18:41:52.712 INFO  Number of open requests on this node: 7 
+2021-03-17 18:41:52.717 INFO  Running panel id: undefined, query: "index | limit 5", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:41:52.732 INFO  Number of open requests on this node: 8 
+2021-03-17 18:41:52.733 INFO  Running panel id: undefined, query: "index | limit 5| extend dummy = '1' | summarize count=count() by dummy", database: sonicwall, pivot: false, realTime: undefined 
+2021-03-17 18:43:24.388 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:43:24.388 INFO  Canceled handler 
+2021-03-17 18:43:24.388 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:43:24.388 INFO  Canceled handler 
+2021-03-17 18:43:24.389 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:43:24.389 INFO  Canceled handler 
+2021-03-17 18:43:24.389 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:43:24.389 INFO  Canceled handler 
+2021-03-17 18:43:24.392 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:43:24.392 INFO  Canceled handler 
+2021-03-17 18:43:24.392 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:43:24.392 INFO  Canceled handler 
+2021-03-17 18:43:24.393 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:43:24.393 INFO  Canceled handler 
+2021-03-17 18:43:24.393 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:43:24.393 INFO  Canceled handler 
+2021-03-17 18:43:31.006 INFO  Number of open requests on this node: 1 
+2021-03-17 18:43:31.009 INFO  Running panel id: undefined, query: "index| summarize count=count() by onemin=floor(StartTime, 1m)", database: sonicwall, pivot: false, realTime: true 
+2021-03-17 18:43:31.054 INFO  Number of open requests on this node: 2 
+2021-03-17 18:43:31.055 INFO  Running panel id: undefined, query: "index", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:43:31.066 INFO  Number of open requests on this node: 3 
+2021-03-17 18:43:31.070 INFO  Running panel id: undefined, query: "index| extend dummy = '1' | summarize count=count() by dummy", database: sonicwall, pivot: false, realTime: undefined 
+2021-03-17 18:44:23.817 INFO  Number of open requests on this node: 4 
+2021-03-17 18:44:23.819 INFO  Running panel id: undefined, query: "index| summarize count=count() by onemin=floor(StartTime, 1m)", database: sonicwall, pivot: false, realTime: true 
+2021-03-17 18:44:23.855 INFO  Number of open requests on this node: 5 
+2021-03-17 18:44:23.857 INFO  Running panel id: undefined, query: "index", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:44:23.870 INFO  Number of open requests on this node: 6 
+2021-03-17 18:44:23.874 INFO  Running panel id: undefined, query: "index| extend dummy = '1' | summarize count=count() by dummy", database: sonicwall, pivot: false, realTime: undefined 
+2021-03-17 18:44:34.043 INFO  Number of open requests on this node: 7 
+2021-03-17 18:44:34.045 INFO  Running panel id: undefined, query: "index | limit 5| summarize count=count() by onemin=floor(StartTime, 1m)", database: sonicwall, pivot: false, realTime: true 
+2021-03-17 18:44:34.089 INFO  Number of open requests on this node: 8 
+2021-03-17 18:44:34.091 INFO  Running panel id: undefined, query: "index | limit 5", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:44:34.102 INFO  Number of open requests on this node: 9 
+2021-03-17 18:44:34.104 INFO  Running panel id: undefined, query: "index | limit 5| extend dummy = '1' | summarize count=count() by dummy", database: sonicwall, pivot: false, realTime: undefined 
+2021-03-17 18:47:38.923 INFO  Number of open requests on this node: 10 
+2021-03-17 18:47:38.925 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg| summarize count=count() by onemin=floor(StartTime, 1m)", database: sonicwall, pivot: false, realTime: true 
+2021-03-17 18:47:39.060 INFO  Number of open requests on this node: 11 
+2021-03-17 18:47:39.062 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:47:39.152 INFO  Number of open requests on this node: 12 
+2021-03-17 18:47:39.154 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg| extend dummy = '1' | summarize count=count() by dummy", database: sonicwall, pivot: false, realTime: undefined 
+2021-03-17 18:48:12.043 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:48:12.043 INFO  Canceled handler 
+2021-03-17 18:48:12.043 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:48:12.043 INFO  Canceled handler 
+2021-03-17 18:48:12.044 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:48:12.044 INFO  Canceled handler 
+2021-03-17 18:48:12.044 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:48:12.044 INFO  Canceled handler 
+2021-03-17 18:48:12.044 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:48:12.044 INFO  Canceled handler 
+2021-03-17 18:48:12.044 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:48:12.044 INFO  Canceled handler 
+2021-03-17 18:48:12.044 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:48:12.044 INFO  Canceled handler 
+2021-03-17 18:48:12.046 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:48:12.046 INFO  Canceled handler 
+2021-03-17 18:48:12.046 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:48:12.046 INFO  Canceled handler 
+2021-03-17 18:48:12.046 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:48:12.046 INFO  Canceled handler 
+2021-03-17 18:48:12.046 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:48:12.046 INFO  Canceled handler 
+2021-03-17 18:48:12.046 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:48:12.046 INFO  Canceled handler 
+2021-03-17 18:48:17.357 INFO  Number of open requests on this node: 1 
+2021-03-17 18:48:17.360 INFO  Running panel id: undefined, query: "index| summarize count=count() by onemin=floor(StartTime, 1s)", database: sonicwall, pivot: false, realTime: true 
+2021-03-17 18:48:17.392 INFO  Number of open requests on this node: 2 
+2021-03-17 18:48:17.394 INFO  Running panel id: undefined, query: "index", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:48:17.404 INFO  Number of open requests on this node: 3 
+2021-03-17 18:48:17.410 INFO  Running panel id: undefined, query: "index| extend dummy = '1' | summarize count=count() by dummy", database: sonicwall, pivot: false, realTime: undefined 
+2021-03-17 18:48:32.021 INFO  Number of open requests on this node: 4 
+2021-03-17 18:48:32.027 INFO  Running panel id: undefined, query: "index| summarize count=count() by onemin=floor(StartTime, 1s)", database: sonicwall, pivot: false, realTime: true 
+2021-03-17 18:48:32.066 INFO  Number of open requests on this node: 5 
+2021-03-17 18:48:32.068 INFO  Running panel id: undefined, query: "index", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:48:32.080 INFO  Number of open requests on this node: 6 
+2021-03-17 18:48:32.091 INFO  Running panel id: undefined, query: "index| extend dummy = '1' | summarize count=count() by dummy", database: sonicwall, pivot: false, realTime: undefined 
+2021-03-17 18:53:13.183 INFO  Number of open requests on this node: 7 
+2021-03-17 18:53:13.186 INFO  Running panel id: undefined, query: "index | limit 10| summarize count=count() by onemin=floor(StartTime, 1s)", database: sonicwall, pivot: false, realTime: true 
+2021-03-17 18:53:13.221 INFO  Number of open requests on this node: 8 
+2021-03-17 18:53:13.223 INFO  Running panel id: undefined, query: "index | limit 10", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:53:13.232 INFO  Number of open requests on this node: 9 
+2021-03-17 18:53:13.234 INFO  Running panel id: undefined, query: "index | limit 10| extend dummy = '1' | summarize count=count() by dummy", database: sonicwall, pivot: false, realTime: undefined 
+2021-03-17 18:53:35.817 INFO  Number of open requests on this node: 10 
+2021-03-17 18:53:35.819 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg| summarize count=count() by onemin=floor(StartTime, 1s)", database: sonicwall, pivot: false, realTime: true 
+2021-03-17 18:53:35.934 INFO  Number of open requests on this node: 11 
+2021-03-17 18:53:35.936 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:53:36.024 INFO  Number of open requests on this node: 12 
+2021-03-17 18:53:36.025 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg| extend dummy = '1' | summarize count=count() by dummy", database: sonicwall, pivot: false, realTime: undefined 
+2021-03-17 18:53:42.650 INFO  Number of open requests on this node: 13 
+2021-03-17 18:53:42.654 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg | 10| summarize count=count() by onemin=floor(StartTime, 1s)", database: sonicwall, pivot: false, realTime: true 
+2021-03-17 18:53:42.758 INFO  Number of open requests on this node: 14 
+2021-03-17 18:53:42.760 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg | 10", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:53:42.845 INFO  Number of open requests on this node: 15 
+2021-03-17 18:53:42.912 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg | 10| extend dummy = '1' | summarize count=count() by dummy", database: sonicwall, pivot: false, realTime: undefined 
+2021-03-17 18:53:43.076 INFO  Client has disconnected. Reason: 1006 Description: Connection dropped by remote peer. 
+2021-03-17 18:53:43.076 INFO  Canceled handler 
+2021-03-17 18:53:50.314 INFO  Number of open requests on this node: 15 
+2021-03-17 18:53:50.317 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg | limit 10| summarize count=count() by onemin=floor(StartTime, 1s)", database: sonicwall, pivot: false, realTime: true 
+2021-03-17 18:53:50.421 INFO  Number of open requests on this node: 16 
+2021-03-17 18:53:50.423 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg | limit 10", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:53:50.505 INFO  Number of open requests on this node: 17 
+2021-03-17 18:53:50.507 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg | limit 10| extend dummy = '1' | summarize count=count() by dummy", database: sonicwall, pivot: false, realTime: undefined 
+2021-03-17 18:54:48.774 INFO  Number of open requests on this node: 18 
+2021-03-17 18:54:48.778 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg| summarize count=count() by onemin=floor(StartTime, 1s)", database: sonicwall, pivot: false, realTime: true 
+2021-03-17 18:54:48.909 INFO  Number of open requests on this node: 19 
+2021-03-17 18:54:48.911 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:54:49.013 INFO  Number of open requests on this node: 20 
+2021-03-17 18:54:49.014 INFO  Running panel id: undefined, query: "index | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \\\"]+)|(\\\"[^\\\"]+\\\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\\\"', '', pairs[1])))) | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id, message=msg| extend dummy = '1' | summarize count=count() by dummy", database: sonicwall, pivot: false, realTime: undefined 
+2021-03-17 18:55:14.920 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:55:14.920 INFO  Canceled handler 
+2021-03-17 18:55:14.921 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:55:14.921 INFO  Canceled handler 
+2021-03-17 18:55:14.921 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:55:14.921 INFO  Canceled handler 
+2021-03-17 18:55:14.923 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:55:14.923 INFO  Canceled handler 
+2021-03-17 18:55:14.923 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:55:14.923 INFO  Canceled handler 
+2021-03-17 18:55:14.923 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:55:14.923 INFO  Canceled handler 
+2021-03-17 18:55:14.923 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:55:14.923 INFO  Canceled handler 
+2021-03-17 18:55:14.924 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:55:14.924 INFO  Canceled handler 
+2021-03-17 18:55:14.925 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:55:14.925 INFO  Canceled handler 
+2021-03-17 18:55:14.925 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:55:14.925 INFO  Canceled handler 
+2021-03-17 18:55:14.927 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:55:14.927 INFO  Canceled handler 
+2021-03-17 18:55:14.929 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:55:14.929 INFO  Canceled handler 
+2021-03-17 18:55:14.929 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:55:14.929 INFO  Canceled handler 
+2021-03-17 18:55:14.929 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:55:14.929 INFO  Canceled handler 
+2021-03-17 18:55:14.929 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:55:14.929 INFO  Canceled handler 
+2021-03-17 18:55:14.929 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:55:14.929 INFO  Canceled handler 
+2021-03-17 18:55:14.930 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:55:14.930 INFO  Canceled handler 
+2021-03-17 18:55:14.930 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:55:14.930 INFO  Canceled handler 
+2021-03-17 18:55:14.935 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:55:14.935 INFO  Canceled handler 
+2021-03-17 18:55:14.935 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:55:14.935 INFO  Canceled handler 
+2021-03-17 18:55:19.629 INFO  Number of open requests on this node: 1 
+2021-03-17 18:55:19.631 INFO  Running panel id: undefined, query: "index| summarize count=count() by onesec=floor(StartTime, 1s)", database: sonicwall, pivot: false, realTime: true 
+2021-03-17 18:55:19.662 INFO  Number of open requests on this node: 2 
+2021-03-17 18:55:19.663 INFO  Running panel id: undefined, query: "index", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:55:19.674 INFO  Number of open requests on this node: 3 
+2021-03-17 18:55:19.677 INFO  Running panel id: undefined, query: "index| extend dummy = '1' | summarize count=count() by dummy", database: sonicwall, pivot: false, realTime: undefined 
+2021-03-17 18:56:07.105 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:56:07.105 INFO  Canceled handler 
+2021-03-17 18:56:07.105 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:56:07.105 INFO  Canceled handler 
+2021-03-17 18:56:07.105 INFO  Client has disconnected. Reason: 1006 Description: Socket Error: read ECONNRESET 
+2021-03-17 18:56:07.105 INFO  Canceled handler 
+2021-03-17 18:57:01.163 INFO  Number of open requests on this node: 1 
+2021-03-17 18:57:01.165 INFO  Running panel id: undefined, query: "index| summarize count=count() by onesec=floor(StartTime, 1s)", database: sonicwall, pivot: false, realTime: true 
+2021-03-17 18:57:01.220 INFO  Number of open requests on this node: 2 
+2021-03-17 18:57:01.221 INFO  Running panel id: undefined, query: "index", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 18:57:01.232 INFO  Number of open requests on this node: 3 
+2021-03-17 18:57:01.235 INFO  Running panel id: undefined, query: "index| extend dummy = '1' | summarize count=count() by dummy", database: sonicwall, pivot: false, realTime: undefined 
+2021-03-17 18:57:24.889 INFO  Client has disconnected. Reason: 1006 Description: Connection dropped by remote peer. 
+2021-03-17 18:57:24.889 INFO  Canceled handler 
+2021-03-17 18:57:24.890 INFO  Client has disconnected. Reason: 1006 Description: Connection dropped by remote peer. 
+2021-03-17 18:57:24.890 INFO  Canceled handler 
+2021-03-17 18:57:24.890 INFO  Client has disconnected. Reason: 1006 Description: Connection dropped by remote peer. 
+2021-03-17 18:57:24.890 INFO  Canceled handler 
+2021-03-17 21:23:19.657 INFO  Number of open requests on this node: 1 
+2021-03-17 21:23:19.661 INFO  Running panel id: undefined, query: "index| summarize count=count() by onesec=floor(StartTime, 1s)", database: sonicwall, pivot: false, realTime: true 
+2021-03-17 21:23:19.723 INFO  Number of open requests on this node: 2 
+2021-03-17 21:23:19.724 INFO  Running panel id: undefined, query: "index", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 21:23:19.737 INFO  Number of open requests on this node: 3 
+2021-03-17 21:23:19.818 INFO  Running panel id: undefined, query: "index| extend dummy = '1' | summarize count=count() by dummy", database: sonicwall, pivot: false, realTime: undefined 
+2021-03-17 21:34:10.692 INFO  Number of open requests on this node: 1 
+2021-03-17 21:34:10.700 INFO  Running panel id: undefined, query: "index| summarize count=count() by onesec=floor(StartTime, 1s)", database: sonicwall, pivot: false, realTime: true 
+2021-03-17 21:34:11.221 INFO  Number of open requests on this node: 2 
+2021-03-17 21:34:11.222 INFO  Number of open requests on this node: 3 
+2021-03-17 21:34:11.225 INFO  Running panel id: undefined, query: "index", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 21:34:11.232 INFO  Running panel id: undefined, query: "index| extend dummy = '1' | summarize count=count() by dummy", database: sonicwall, pivot: false, realTime: undefined 
+2021-03-17 21:35:52.758 INFO  Number of open requests on this node: 4 
+2021-03-17 21:35:52.761 INFO  Running panel id: undefined, query: "index | limit 2| summarize count=count() by onesec=floor(StartTime, 1s)", database: sonicwall, pivot: false, realTime: true 
+2021-03-17 21:35:52.821 INFO  Number of open requests on this node: 5 
+2021-03-17 21:35:52.823 INFO  Running panel id: undefined, query: "index | limit 2", database: sonicwall, pivot: false, realTime: false 
+2021-03-17 21:35:52.834 INFO  Number of open requests on this node: 6 
+2021-03-17 21:35:52.835 INFO  Running panel id: undefined, query: "index | limit 2| extend dummy = '1' | summarize count=count() by dummy", database: sonicwall, pivot: false, realTime: undefined 

@@ -1,0 +1,308 @@
+[
+  {
+    "name": "Default dashboard",
+    "data": [
+      {
+        "cols": 7,
+        "rows": 3,
+        "y": 0,
+        "x": 0,
+        "name": "Dataset",
+        "panelId": "panel_1",
+        "chartLibrary": "echarts",
+        "chartOptions": {
+          "source": "sonicwall",
+          "sourceType": "kafka",
+          "searchQuery": "stream | extend dummy = '1' | summarize count=count() by dummy",
+          "realtime": true,
+          "showHeader": true,
+          "chartConfig": {
+            "legend": {},
+            "tooltip": {
+              "trigger": "axis",
+              "showContent": true
+            },
+            "xAxis": {
+              "type": "category",
+              "axisLabel": {
+                  "rotate": 30,
+                  "width": 100,
+                  "overflow": "truncate"
+              }
+            },
+            "yAxis": {
+              "gridIndex": 0
+            },
+            "grid": {
+              "bottom": "25%"
+            },
+            "seriesMerge": true,
+            "uniqueMergeKeys": [
+              "timestamp"
+            ],
+            "timeAxisSortField": "timestamp",
+            "series": [
+              {
+                "type": "bar",
+                "connectNulls": true,
+                "encode": {
+                  "x": "timestamp",
+                  "y": "sensor1"
+                }
+              },
+              {
+                "type": "line",
+                "connectNulls": true,
+                "encode": {
+                  "x": "timestamp",
+                  "y": "sensor2"
+                }
+              }
+            ]
+          },
+          "dataset": {
+            "dimensions": [
+              "timestamp",
+              "sensor1",
+              "sensor2"
+            ],
+            "source": []
+          }
+        }
+      },
+      {
+        "cols": 7,
+        "rows": 3,
+        "y": 0,
+        "x": 7,
+        "name": "Pie",
+        "panelId": "panel_2",
+        "chartLibrary": "echarts",
+        "chartOptions": {
+          "source": "sonicwall",
+          "sourceType": "kafka",
+          "searchQuery": "stream | extend dummy = '1' | summarize count=count() by dummy",
+          "showHeader": true,
+          "chartConfig": {
+            "seriesMerge": true,
+            "uniqueMergeKeys": [
+              "dummmy"
+            ],
+            "tooltip": {
+              "show": false
+            },
+            "legend": {
+              "show": false
+            },
+            "series": [
+              {
+                "name": "test",
+                "type": "pie",
+                "radius": [
+                  "40%",
+                  "70%"
+                ],
+                "avoidLabelOverlap": false,
+                "label": {
+                  "show": true,
+                  "position": "center",
+                  "formatter": "{@count}",
+                  "fontSize": "80",
+                  "fontWeight": "bold"
+                },
+                "labelLine": {
+                  "show": false
+                }
+              }
+            ]
+          },
+          "dataset": {
+            "dimensions": [
+              "dummy",
+              "count"
+            ],
+            "source": [
+              {
+                "dummy": "1",
+                "count": 3434343
+              }
+            ]
+          }
+        }
+      },
+      {
+        "cols": 4,
+        "rows": 3,
+        "y": 3,
+        "x": 0,
+        "name": "Gauge",
+        "panelId": "panel_3",
+        "chartLibrary": "echarts",
+        "chartOptions": {
+          "source": "test",
+          "sourceType": "kafka",
+          "searchQuery": "stream | extend dummy = '1' | summarize count=count() by dummy",
+          "showHeader": true,
+          "chartConfig": {
+            "tooltip": {
+              "trigger": "item"
+            },
+            "legend": {
+              "top": "5%",
+              "left": "center"
+            },
+            "series": [
+              {
+                "type": "gauge",
+                "axisLine": {
+                  "lineStyle": {
+                    "width": 30,
+                    "color": [
+                      [
+                        0.3,
+                        "#67e0e3"
+                      ],
+                      [
+                        0.7,
+                        "#37a2da"
+                      ],
+                      [
+                        1,
+                        "#fd666d"
+                      ]
+                    ]
+                  }
+                },
+                "pointer": {
+                  "itemStyle": {
+                    "color": "auto"
+                  }
+                },
+                "axisTick": {
+                  "distance": -30,
+                  "length": 8,
+                  "lineStyle": {
+                    "color": "#fff",
+                    "width": 2
+                  }
+                },
+                "splitLine": {
+                  "length": 0,
+                  "lineStyle": {
+                    "color": "#fff",
+                    "width": 4
+                  }
+                },
+                "axisLabel": {
+                  "color": "auto",
+                  "distance": 40,
+                  "fontSize": 20
+                },
+                "detail": {
+                  "valueAnimation": true,
+                  "formatter": "{value} km/h",
+                  "color": "auto"
+                }
+              }
+            ],
+            "seriesMerge": true
+          },
+          "dataset": {
+            "source": [
+              {
+                "value": 70
+              }
+            ]
+          }
+        }
+      }, {
+        "cols": 10,
+        "rows": 1,
+        "y": 3,
+        "x": 4,
+        "name": "Search",
+        "panelId": "panel_5",
+        "chartLibrary": "primeng",
+        "chartOptions": {
+          "source": "sonicwall",
+          "sourceType": "kafka",
+          "searchQuery": "",
+          "realtime": false,
+          "showHeader": true,
+          "chartConfig": {
+            "chartType": "searchbar",
+            "emptyText": "Search",
+            "buttonText": "Search",
+            "value": "",
+            "onButtonClick": "",
+            "onMouseout": "",
+            "onChange": ""
+          },
+          "dataset": {
+            "source": []
+          }
+        }
+      }, {
+        "cols": 10,
+        "rows": 3,
+        "y": 4,
+        "x": 4,
+        "name": "Table",
+        "panelId": "panel_4",
+        "chartLibrary": "primeng",
+        "chartOptions": {
+          "source": "sonicwall",
+          "sourceType": "kafka",
+          "searchQuery": "stream | extend dummy = '1' | summarize count=count() by dummy",
+          "realtime": true,
+          "showHeader": true,
+          "chartConfig": {
+            "chartType": "table",
+            "showHeader": true,
+            "pagination": true,
+            "globalSearch": false,
+            "columnSearch": false,
+            "pageSize": 10,
+            "maxRecords": -1,
+            "seriesMerge": true,
+            "uniqueMergeKeys": [
+              "timestamp"
+            ],
+            "timeAxisSortField": "timestamp",
+            "columns": [
+              {
+                "field": "timestamp",
+                "header": "Timestamp",
+                "sortable": true,
+                "searchable": false,
+                "resizable": true,
+                "width": "25%"
+              },
+              {
+                "field": "host",
+                "header": "Host",
+                "sortable": true,
+                "searchable": false,
+                "resizable": false,
+                "width": "20%"
+              },
+              {
+                "field": "message",
+                "header": "Message",
+                "sortable": true,
+                "searchable": true,
+                "resizable": true
+              }
+            ]
+          },
+          "dataset": {
+            "source": []
+          }
+        }
+      }
+    ],
+    "options": {
+      "default": true
+    }
+  }
+]

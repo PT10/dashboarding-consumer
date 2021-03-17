@@ -1,0 +1,266 @@
+Time taken by   0
+Time taken by QueryBlock index | project message = extract_all(@'^\w+\s+\d+\s+\d+:\d+:\d+\s+[\w\.]+\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ "]+)|("[^"]+"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('"', '', pairs[1]))))  | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id 0
+Time taken by List index | project message = extract_all(@'^\w+\s+\d+\s+\d+:\d+:\d+\s+[\w\.]+\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ "]+)|("[^"]+"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('"', '', pairs[1]))))  | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id 0
+Time taken by SeparatedElement index | project message = extract_all(@'^\w+\s+\d+\s+\d+:\d+:\d+\s+[\w\.]+\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ "]+)|("[^"]+"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('"', '', pairs[1]))))  | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id 0
+Time taken by ExpressionStatement index | project message = extract_all(@'^\w+\s+\d+\s+\d+:\d+:\d+\s+[\w\.]+\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ "]+)|("[^"]+"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('"', '', pairs[1]))))  | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id 0
+Time taken by PipeExpression index | project message = extract_all(@'^\w+\s+\d+\s+\d+:\d+:\d+\s+[\w\.]+\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ "]+)|("[^"]+"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('"', '', pairs[1]))))  | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) | project-rename fw_id=id 0
+Time taken by PipeExpression index | project message = extract_all(@'^\w+\s+\d+\s+\d+:\d+:\d+\s+[\w\.]+\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ "]+)|("[^"]+"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('"', '', pairs[1]))))  | evaluate bag_unpack(bag) | extend ['time']=tostring(todatetime(['time'])) 0
+Time taken by PipeExpression index | project message = extract_all(@'^\w+\s+\d+\s+\d+:\d+:\d+\s+[\w\.]+\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ "]+)|("[^"]+"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('"', '', pairs[1]))))  | evaluate bag_unpack(bag) 0
+Time taken by PipeExpression index | project message = extract_all(@'^\w+\s+\d+\s+\d+:\d+:\d+\s+[\w\.]+\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ "]+)|("[^"]+"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('"', '', pairs[1])))) 0
+Time taken by PipeExpression index | project message = extract_all(@'^\w+\s+\d+\s+\d+:\d+:\d+\s+[\w\.]+\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ "]+)|("[^"]+"))', dynamic([1, 2]), message[0]) 0
+Time taken by PipeExpression index | project message = extract_all(@'^\w+\s+\d+\s+\d+:\d+:\d+\s+[\w\.]+\s+(.+)', line) 0
+Time taken by NameReference index 0
+Time taken by TokenName index 0
+Time taken by IdentifierToken index 0
+Time taken by BarToken  | 0
+Time taken by ProjectOperator  project message = extract_all(@'^\w+\s+\d+\s+\d+:\d+:\d+\s+[\w\.]+\s+(.+)', line) 4867
+Time taken by ProjectKeyword  project 0
+Time taken by List  message = extract_all(@'^\w+\s+\d+\s+\d+:\d+:\d+\s+[\w\.]+\s+(.+)', line) 0
+Time taken by SeparatedElement  message = extract_all(@'^\w+\s+\d+\s+\d+:\d+:\d+\s+[\w\.]+\s+(.+)', line) 0
+Time taken by SimpleNamedExpression  message = extract_all(@'^\w+\s+\d+\s+\d+:\d+:\d+\s+[\w\.]+\s+(.+)', line) 0
+Time taken by NameDeclaration  message 0
+Time taken by TokenName  message 0
+Time taken by IdentifierToken  message 0
+Time taken by EqualToken  = 0
+Time taken by FunctionCallExpression  extract_all(@'^\w+\s+\d+\s+\d+:\d+:\d+\s+[\w\.]+\s+(.+)', line) 3433
+Time taken by NameReference  extract_all 0
+Time taken by TokenName  extract_all 0
+Time taken by IdentifierToken  extract_all 0
+Time taken by ExpressionList (@'^\w+\s+\d+\s+\d+:\d+:\d+\s+[\w\.]+\s+(.+)', line) 0
+Time taken by OpenParenToken ( 0
+Time taken by List @'^\w+\s+\d+\s+\d+:\d+:\d+\s+[\w\.]+\s+(.+)', line 0
+Time taken by SeparatedElement @'^\w+\s+\d+\s+\d+:\d+:\d+\s+[\w\.]+\s+(.+)', 0
+Time taken by StringLiteralExpression @'^\w+\s+\d+\s+\d+:\d+:\d+\s+[\w\.]+\s+(.+)' 0
+Time taken by StringLiteralToken @'^\w+\s+\d+\s+\d+:\d+:\d+\s+[\w\.]+\s+(.+)' 0
+Time taken by CommaToken , 0
+Time taken by SeparatedElement  line 0
+Time taken by NameReference  line 0
+Time taken by TokenName  line 0
+Time taken by IdentifierToken  line 0
+Time taken by null null 0
+Time taken by CloseParenToken ) 0
+Time taken by null null 0
+Time taken by BarToken  | 0
+Time taken by ProjectOperator  project pairs = extract_all(@'([^ =]+)=(([^ "]+)|("[^"]+"))', dynamic([1, 2]), message[0]) 67145
+Time taken by ProjectKeyword  project 0
+Time taken by List  pairs = extract_all(@'([^ =]+)=(([^ "]+)|("[^"]+"))', dynamic([1, 2]), message[0]) 0
+Time taken by SeparatedElement  pairs = extract_all(@'([^ =]+)=(([^ "]+)|("[^"]+"))', dynamic([1, 2]), message[0]) 0
+Time taken by SimpleNamedExpression  pairs = extract_all(@'([^ =]+)=(([^ "]+)|("[^"]+"))', dynamic([1, 2]), message[0]) 0
+Time taken by NameDeclaration  pairs 0
+Time taken by TokenName  pairs 0
+Time taken by IdentifierToken  pairs 0
+Time taken by EqualToken  = 0
+Time taken by FunctionCallExpression  extract_all(@'([^ =]+)=(([^ "]+)|("[^"]+"))', dynamic([1, 2]), message[0]) 65406
+Time taken by NameReference  extract_all 0
+Time taken by TokenName  extract_all 0
+Time taken by IdentifierToken  extract_all 0
+Time taken by ExpressionList (@'([^ =]+)=(([^ "]+)|("[^"]+"))', dynamic([1, 2]), message[0]) 0
+Time taken by OpenParenToken ( 0
+Time taken by List @'([^ =]+)=(([^ "]+)|("[^"]+"))', dynamic([1, 2]), message[0] 0
+Time taken by SeparatedElement @'([^ =]+)=(([^ "]+)|("[^"]+"))', 0
+Time taken by StringLiteralExpression @'([^ =]+)=(([^ "]+)|("[^"]+"))' 0
+Time taken by StringLiteralToken @'([^ =]+)=(([^ "]+)|("[^"]+"))' 0
+Time taken by CommaToken , 0
+Time taken by SeparatedElement  dynamic([1, 2]), 0
+Time taken by DynamicExpression  dynamic([1, 2]) 0
+Time taken by DynamicKeyword  dynamic 0
+Time taken by OpenParenToken ( 0
+Time taken by JsonArrayExpression [1, 2] 0
+Time taken by OpenBracketToken [ 0
+Time taken by List 1, 2 0
+Time taken by SeparatedElement 1, 0
+Time taken by LongLiteralExpression 1 0
+Time taken by LongLiteralToken 1 0
+Time taken by CommaToken , 0
+Time taken by SeparatedElement  2 0
+Time taken by LongLiteralExpression  2 0
+Time taken by LongLiteralToken  2 0
+Time taken by null null 0
+Time taken by CloseBracketToken ] 0
+Time taken by CloseParenToken ) 0
+Time taken by CommaToken , 0
+Time taken by SeparatedElement  message[0] 0
+Time taken by ElementExpression  message[0] 1435
+Time taken by NameReference  message 0
+Time taken by TokenName  message 0
+Time taken by IdentifierToken  message 0
+Time taken by BracketedExpression [0] 775
+Time taken by OpenBracketToken [ 0
+Time taken by LongLiteralExpression 0 0
+Time taken by LongLiteralToken 0 0
+Time taken by CloseBracketToken ] 0
+Time taken by null null 0
+Time taken by CloseParenToken ) 0
+Time taken by null null 0
+Time taken by BarToken  | 0
+Time taken by MvApplyOperator  mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('"', '', pairs[1])))) 216313
+Time taken by MvDashApplyKeyword  mv-apply 0
+Time taken by List  0
+Time taken by List  pairs 0
+Time taken by SeparatedElement  pairs 0
+Time taken by MvApplyExpression  pairs 0
+Time taken by NameReference  pairs 0
+Time taken by TokenName  pairs 0
+Time taken by IdentifierToken  pairs 0
+Time taken by null null 0
+Time taken by null null 0
+Time taken by null null 0
+Time taken by null null 0
+Time taken by OnKeyword  on 0
+Time taken by MvApplySubqueryExpression  (summarize bag=make_bag(pack(tostring(pairs[0]), replace('"', '', pairs[1])))) 0
+Time taken by OpenParenToken  ( 0
+Time taken by SummarizeOperator summarize bag=make_bag(pack(tostring(pairs[0]), replace('"', '', pairs[1]))) 210512
+Time taken by SummarizeKeyword summarize 0
+Time taken by List  0
+Time taken by List  bag=make_bag(pack(tostring(pairs[0]), replace('"', '', pairs[1]))) 0
+Time taken by SeparatedElement  bag=make_bag(pack(tostring(pairs[0]), replace('"', '', pairs[1]))) 0
+Time taken by SimpleNamedExpression  bag=make_bag(pack(tostring(pairs[0]), replace('"', '', pairs[1]))) 0
+Time taken by NameDeclaration  bag 0
+Time taken by TokenName  bag 0
+Time taken by IdentifierToken  bag 0
+Time taken by EqualToken = 0
+Time taken by FunctionCallExpression make_bag(pack(tostring(pairs[0]), replace('"', '', pairs[1]))) 175908
+Time taken by NameReference make_bag 0
+Time taken by TokenName make_bag 0
+Time taken by IdentifierToken make_bag 0
+Time taken by ExpressionList (pack(tostring(pairs[0]), replace('"', '', pairs[1]))) 0
+Time taken by OpenParenToken ( 0
+Time taken by List pack(tostring(pairs[0]), replace('"', '', pairs[1])) 0
+Time taken by SeparatedElement pack(tostring(pairs[0]), replace('"', '', pairs[1])) 0
+Time taken by FunctionCallExpression pack(tostring(pairs[0]), replace('"', '', pairs[1])) 140000
+Time taken by NameReference pack 0
+Time taken by TokenName pack 0
+Time taken by PackKeyword pack 0
+Time taken by ExpressionList (tostring(pairs[0]), replace('"', '', pairs[1])) 0
+Time taken by OpenParenToken ( 0
+Time taken by List tostring(pairs[0]), replace('"', '', pairs[1]) 0
+Time taken by SeparatedElement tostring(pairs[0]), 0
+Time taken by FunctionCallExpression tostring(pairs[0]) 42826
+Time taken by NameReference tostring 0
+Time taken by TokenName tostring 0
+Time taken by IdentifierToken tostring 0
+Time taken by ExpressionList (pairs[0]) 0
+Time taken by OpenParenToken ( 0
+Time taken by List pairs[0] 0
+Time taken by SeparatedElement pairs[0] 0
+Time taken by ElementExpression pairs[0] 24015
+Time taken by NameReference pairs 0
+Time taken by TokenName pairs 0
+Time taken by IdentifierToken pairs 0
+Time taken by BracketedExpression [0] 14696
+Time taken by OpenBracketToken [ 0
+Time taken by LongLiteralExpression 0 0
+Time taken by LongLiteralToken 0 0
+Time taken by CloseBracketToken ] 0
+Time taken by null null 0
+Time taken by CloseParenToken ) 0
+Time taken by CommaToken , 0
+Time taken by SeparatedElement  replace('"', '', pairs[1]) 0
+Time taken by FunctionCallExpression  replace('"', '', pairs[1]) 66647
+Time taken by NameReference  replace 0
+Time taken by TokenName  replace 0
+Time taken by ReplaceKeyword  replace 0
+Time taken by ExpressionList ('"', '', pairs[1]) 0
+Time taken by OpenParenToken ( 0
+Time taken by List '"', '', pairs[1] 0
+Time taken by SeparatedElement '"', 0
+Time taken by StringLiteralExpression '"' 0
+Time taken by StringLiteralToken '"' 0
+Time taken by CommaToken , 0
+Time taken by SeparatedElement  '', 0
+Time taken by StringLiteralExpression  '' 0
+Time taken by StringLiteralToken  '' 0
+Time taken by CommaToken , 0
+Time taken by SeparatedElement  pairs[1] 0
+Time taken by ElementExpression  pairs[1] 31551
+Time taken by NameReference  pairs 0
+Time taken by TokenName  pairs 0
+Time taken by IdentifierToken  pairs 0
+Time taken by BracketedExpression [1] 22809
+Time taken by OpenBracketToken [ 0
+Time taken by LongLiteralExpression 1 0
+Time taken by LongLiteralToken 1 0
+Time taken by CloseBracketToken ] 0
+Time taken by null null 0
+Time taken by CloseParenToken ) 0
+Time taken by null null 0
+Time taken by CloseParenToken ) 0
+Time taken by null null 0
+Time taken by CloseParenToken ) 0
+Time taken by null null 0
+Time taken by null null 0
+Time taken by CloseParenToken ) 0
+Time taken by BarToken   | 0
+Time taken by EvaluateOperator  evaluate bag_unpack(bag) 0
+Time taken by EvaluateKeyword  evaluate 0
+Time taken by List  0
+Time taken by FunctionCallExpression  bag_unpack(bag) 0
+Time taken by NameReference  bag_unpack 0
+Time taken by TokenName  bag_unpack 0
+Time taken by IdentifierToken  bag_unpack 0
+Time taken by ExpressionList (bag) 0
+Time taken by OpenParenToken ( 0
+Time taken by List bag 0
+Time taken by SeparatedElement bag 0
+Time taken by NameReference bag 0
+Time taken by TokenName bag 0
+Time taken by IdentifierToken bag 0
+Time taken by null null 0
+Time taken by CloseParenToken ) 0
+Time taken by BarToken  | 0
+Time taken by ExtendOperator  extend ['time']=tostring(todatetime(['time'])) 0
+Time taken by ExtendKeyword  extend 0
+Time taken by List  ['time']=tostring(todatetime(['time'])) 0
+Time taken by SeparatedElement  ['time']=tostring(todatetime(['time'])) 0
+Time taken by SimpleNamedExpression  ['time']=tostring(todatetime(['time'])) 0
+Time taken by NameDeclaration  ['time'] 0
+Time taken by BracketedName  ['time'] 0
+Time taken by OpenBracketToken  [ 0
+Time taken by StringLiteralExpression 'time' 0
+Time taken by StringLiteralToken 'time' 0
+Time taken by CloseBracketToken ] 0
+Time taken by EqualToken = 0
+Time taken by FunctionCallExpression tostring(todatetime(['time'])) 4227
+Time taken by NameReference tostring 0
+Time taken by TokenName tostring 0
+Time taken by IdentifierToken tostring 0
+Time taken by ExpressionList (todatetime(['time'])) 0
+Time taken by OpenParenToken ( 0
+Time taken by List todatetime(['time']) 0
+Time taken by SeparatedElement todatetime(['time']) 0
+Time taken by FunctionCallExpression todatetime(['time']) 1983
+Time taken by NameReference todatetime 0
+Time taken by TokenName todatetime 0
+Time taken by IdentifierToken todatetime 0
+Time taken by ExpressionList (['time']) 0
+Time taken by OpenParenToken ( 0
+Time taken by List ['time'] 0
+Time taken by SeparatedElement ['time'] 0
+Time taken by NameReference ['time'] 0
+Time taken by BracketedName ['time'] 0
+Time taken by OpenBracketToken [ 0
+Time taken by StringLiteralExpression 'time' 0
+Time taken by StringLiteralToken 'time' 0
+Time taken by CloseBracketToken ] 0
+Time taken by null null 0
+Time taken by CloseParenToken ) 0
+Time taken by null null 0
+Time taken by CloseParenToken ) 0
+Time taken by null null 0
+Time taken by BarToken  | 0
+Time taken by ProjectRenameOperator  project-rename fw_id=id 4280
+Time taken by ProjectRenameKeyword  project-rename 0
+Time taken by List  fw_id=id 0
+Time taken by SeparatedElement  fw_id=id 0
+Time taken by SimpleNamedExpression  fw_id=id 0
+Time taken by NameDeclaration  fw_id 0
+Time taken by TokenName  fw_id 0
+Time taken by IdentifierToken  fw_id 0
+Time taken by EqualToken = 0
+Time taken by NameReference id 0
+Time taken by TokenName id 0
+Time taken by IdKeyword id 0
+Time taken by null null 0
+Time taken by null null 0
+Time taken by null null 0
+Time taken by EndOfTextToken  0
