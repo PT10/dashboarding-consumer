@@ -15,7 +15,7 @@
           "sourceType": "kafka",
           "searchQuery": "index",
           "searchQueryExtention": "| summarize count=count() by onesec=floor(timestamp, 1s)",
-          "realtime": false,
+          "realtime": true,
           "showHeader": false,
           "subscriptions": ["$var1(searchQuery)", "$timewindow(timeWindow)"],
           "chartConfig": {
@@ -65,7 +65,7 @@
               "onesec",
               "count"
             ],
-            "source": [{}]
+            "source": []
           }
         }
       },
@@ -159,9 +159,9 @@
         "rows": 4,
         "y": 1,
         "x": 10,
-        "name": "Single",
+        "name": "Pie",
         "panelId": "panel_2",
-        "chartLibrary": "primeng",
+        "chartLibrary": "echarts",
         "chartOptions": {
           "source": "sonicwall",
           "sourceType": "kafka",
@@ -170,10 +170,6 @@
           "showHeader": false,
           "subscriptions": ["$var1(searchQuery)", "$timewindow(timeWindow)"],
           "chartConfig": {
-            "chartType": "single",
-            "seriesName": "Total",
-            "font-size": "80px",
-            "font-weight": "600",
             "seriesMerge": true,
             "uniqueMergeKeys": [
               "dummmy"
@@ -183,13 +179,39 @@
             },
             "legend": {
               "show": false
-            }
+            },
+            "series": [
+              {
+                "name": "test",
+                "type": "pie",
+                "radius": [
+                  "40%",
+                  "70%"
+                ],
+                "avoidLabelOverlap": false,
+                "label": {
+                  "show": true,
+                  "position": "center",
+                  "formatter": "{@count}",
+                  "fontSize": "80",
+                  "fontWeight": "bold"
+                },
+                "labelLine": {
+                  "show": false
+                }
+              }
+            ]
           },
           "dataset": {
             "dimensions": [
+              "dummy",
               "count"
             ],
             "source": [
+              {
+                "dummy": "1",
+                "count": 0
+              }
             ]
           }
         }

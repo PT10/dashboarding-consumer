@@ -1463,7 +1463,7 @@ function kToString(context, result, params) {
 }
 
 function kFloor(context, result, params) {
-    value = params[0][1];
+    value = new Date(params[0][1]).valueOf();
     roundTo = params[1][1];
     return Math.floor(value/roundTo)*roundTo;
 }

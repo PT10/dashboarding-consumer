@@ -47,7 +47,7 @@ export class AppComponent implements AfterViewInit {
             observable: subject.asObservable().subscribe(d => {
               panel.chartOptions[paramName] = d.data.data;
 
-              if (!panel.chartOptions.searchQuery || panel.chartOptions.timeWindow.length !== 2) {
+              if (!panel.chartOptions.searchQuery || !panel.chartOptions.timeWindow || panel.chartOptions.timeWindow.length !== 2) {
                 return;
               }
 
