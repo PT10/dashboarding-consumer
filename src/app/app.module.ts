@@ -10,8 +10,10 @@ import { NgxEchartsModule } from 'ngx-echarts';
 import { CalendarModule } from 'primeng/calendar';
 import { TableModule } from 'primeng/table';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {ToastModule} from 'primeng/toast';
 
 import * as echarts from 'echarts';
+import { MessageService } from 'primeng/components/common/messageservice';
 
 @NgModule({
   declarations: [
@@ -24,12 +26,13 @@ import * as echarts from 'echarts';
     HttpClientModule,
     DashboardModule,
     TableModule,
+    ToastModule,
     NgxEchartsModule.forRoot({
       echarts,
     }),
     CalendarModule
   ],
-  providers: [DataService],
+  providers: [DataService, MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

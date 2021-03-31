@@ -14,7 +14,7 @@
           "source": "sonicwall",
           "sourceType": "kafka",
           "searchQuery": "index",
-          "searchQueryExtention": "| summarize count=count() by onesec=floor(timestamp, 1s)",
+          "searchQueryExtention": "| summarize count=count() by onesec=floor(timestamp, 2s)",
           "realtime": false,
           "showHeader": false,
           "subscriptions": ["$var1(searchQuery)", "$timewindow(timeWindow)"],

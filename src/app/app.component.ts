@@ -2,11 +2,13 @@ import { DataService } from './data.service';
 import { AfterViewInit, Component } from '@angular/core';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { Subject } from 'rxjs';
+import { MessageService } from 'primeng/components/common/messageservice';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  providers: [MessageService]
 })
 export class AppComponent implements AfterViewInit {
   title = 'dashConsumeNew';
@@ -14,15 +16,20 @@ export class AppComponent implements AfterViewInit {
 
   sub1;
   sub2;
+  cnt;
+  variables = {};
+
+  dateVal;
 
   private eventList= {};
 
-  constructor(public myDashServ: DataService) {}
+  private liveConections = {}
+
+  constructor(public myDashServ: DataService, public messageService: MessageService) {}
 
   ngAfterViewInit() {
     this.myDashServ.getDashboardData().subscribe((data: any) => {
       this.myDashServ.dashboards = data;
-      //this.updateData();
       this.addSubscriptios();
     }, error => {
       alert("Error");
@@ -36,7 +43,7 @@ export class AppComponent implements AfterViewInit {
         panel.chartOptions.subscriptions.forEach((s: string) => {
           let subject = new Subject<any>();
           const varName = s.slice(0, s.indexOf('('))
-          const paramName = s.slice(s.indexOf('(') + 1, s.indexOf(')'));
+          const paramNames = s.slice(s.indexOf('(') + 1, s.indexOf(')'));
 
           if (!this.eventList[varName]) {
             this.eventList[varName] = [];
@@ -45,17 +52,49 @@ export class AppComponent implements AfterViewInit {
             panelId: panel.panelId,
             subject: subject,
             observable: subject.asObservable().subscribe(d => {
-              panel.chartOptions[paramName] = d.data.data;
+              let changeDetected = false;
+              const params = paramNames.split(',');
+              if (panel.chartOptions[params[0].trim()] !== d.data.data) {
+                panel.chartOptions[params[0].trim()] = d.data.data;
+                changeDetected = true;
+              }
 
+              if (d.data.timeWindow && 
+                params[1] && params[1].trim() === 'timeWindow' &&
+                JSON.stringify(panel.chartOptions['timeWindow']) !== JSON.stringify(d.data.timeWindow)) {
+                  panel.chartOptions['timeWindow'] = d.data.timeWindow;
+                  changeDetected = true;
+              }
+
+              if (!changeDetected) {
+                return; // No change in values
+              }
+
+              // Clear previous data
+              panel.chartOptions.dataset.source = []
+
+              // If there is a live conection close it
+              if (this.liveConections[panel.panelId]) {
+                try {
+                  this.liveConections[panel.panelId].complete();
+                  delete this.liveConections[panel.panelId];
+                } catch {}
+              }
+
+              
+              
               if (!panel.chartOptions.searchQuery || !panel.chartOptions.timeWindow || panel.chartOptions.timeWindow.length !== 2) {
                 return;
               }
 
-              const q = panel.chartOptions.searchQuery + (panel.chartOptions.searchQueryExtention || '');
+              const q: string = (panel.chartOptions.searchQueryPrefix || '') + panel.chartOptions.searchQuery + (panel.chartOptions.searchQueryExtention || '');
               const startTime = panel.chartOptions.timeWindow[0];
-              const endTime = panel.chartOptions.timeWindow[1];
+              const endTime: Date = new Date(panel.chartOptions.timeWindow[1])
+
+              const additionalParams = panel.chartOptions.additionalParams || Math.random().toString(36).substring(7);
 
               const ws = this.getSocketConn();
+              this.liveConections[panel.panelId] = ws;
               ws.subscribe(
                 msg => {
                   if (msg && msg.data) {
@@ -70,90 +109,60 @@ export class AppComponent implements AfterViewInit {
 
                     panel.chartOptions.chartConfig.columns = msg.data[0]['__header__'];
 
-                    panel.chartOptions.dataset.source = msg.data.slice(1).filter(d => d[panel.chartOptions.chartConfig.columns[0]['field']] != null);
+                    if (msg.data.length > 1) {
+                      // msg.data.slice(1).forEach(d => {
+                      //   panel.chartOptions.dataset.source.push(d); //.filter(d => d[panel.chartOptions.chartConfig.columns[0]['field']] != null);
+                      // })
+                      panel.chartOptions.dataset.source = panel.chartOptions.dataset.source.concat(msg.data.slice(1))
+                      panel.chartOptions.loadStatus = "Completed";
+                    }
+
+                    if (!panel.chartOptions.chartConfig.columns || panel.chartOptions.chartConfig.columns.length === 0) {
+                      if (panel.chartOptions.dataset.source && panel.chartOptions.dataset.source.length > 0) {
+                        const keys = Object.keys(panel.chartOptions.dataset.source[0])
+                        panel.chartOptions.chartConfig.columns = [];
+                        keys.forEach(k => 
+                          panel.chartOptions.chartConfig.columns.push({
+                              field: k,
+                              header: k,
+                              sortable: true,
+                              searchable: false,
+                              resizable: true,
+                              width: "25%"
+                          }))
+                      }
+                    }
                   }
                 }, error => {
-
+                  this.messageService.add({key: 'tc', severity:'error', summary: 'Error connecting server', detail:'Websocket server is not running'});
                 }, () => {
 
                 }
               );
 
-              ws.next({query: q, from: startTime, to: endTime, pivot: false, realTime: panel.chartOptions.realtime, database: 'sonicwall'})
+              //this.cnt += 3
+              const factor = q.startsWith('.export') ? 0.5 : 1;
+              setTimeout(() => {
+                //panel.chartOptions.dataset.source = []
+                panel.chartOptions.loadStatus = "Loading";
+
+                ws.next({query: q, from: startTime, to: endTime, pivot: false, 
+                  realTime: panel.chartOptions.realtime, additionalParams: additionalParams})
+              }, factor * 1000);
+
+              if (panel.chartOptions.chartConfig.onQueryExecuted) {
+                const event: string = panel.chartOptions.chartConfig.onQueryExecuted;
+
+                this.processEvent({
+                  data: {data: additionalParams, timeWindow: panel.chartOptions.timeWindow}, 
+                  variable: event
+                });
+              }
             })
           })
         })
       }
     });
-  }
-
-
-  private updateData() {
-    const dates = [
-      {ts: "2020-02-09T12:01:00.000Z", val: 1},
-      {ts: "2020-02-09T12:02:00.000Z", val: 2},
-      {ts: "2020-02-09T12:01:00.000Z", val: 30},
-      {ts: "2020-02-09T12:01:00.000Z", val: 10},
-      {ts: "2020-02-09T12:02:00.000Z", val: 50, val2: 30},
-      {ts: "2020-02-09T12:03:00.000Z", val: 40},
-      {ts: "2020-02-09T12:01:00.000Z", val: 50, val2: 3},
-      {ts: "2020-02-09T12:02:00.000Z", val: 30},
-      {ts: "2020-02-09T12:00:00.000Z", val: 50},
-      {ts: "2020-02-09T12:05:00.000Z", val2: 50}
-    ]
-
-    // dates.forEach(date => {
-    //   this.myDashServ.dashboards[0].data[0].chartOptions.dataset.source.push(
-    //     {"timestamp": date["ts"], "sensor1": date["val"]});
-    // })
-
-    let i = 0;
-    let test = [];
-    //let sub;
-
-
-      this.sub1 = setInterval(() => {
-        this.myDashServ.dashboards[0].data[0].chartOptions.dataset.source.push(
-          {"timestamp": new Date(), "sensor1": 10, "sensor2": 100}); i++;
-      }, 1000)
-
-     setTimeout(() => {
-       clearInterval(this.sub1)
-       this.myDashServ.dashboards[0].data[0].chartOptions.loadStatus = "Completed"
-      }, 12000);
-
-    // setTimeout(() => {
-    //   this.myDashServ.dashboards[0].data[0].chartOptions.dataset.source =[{}];
-    //   this.myDashServ.dashboards[0].data[0].chartOptions.loadStatus = "Completed"
-    //  }, 4000)
-
-    // let sub2 = setTimeout(() => {
-    //   this.myDashServ.dashboards[0].data[0].chartOptions.dataset.source.push(
-    //     {"timestamp": new Date(), "sensor1": Math.random() * 10, "sensor2": Math.random() * 100}); i++;
-    // }, 45000);
-
-    // let sub2 = setInterval(() => {
-    //   this.myDashServ.dashboards[0].data[0].chartOptions.dataset.source.push(
-    //     {"timestamp": "2020-02-09T12:05:00.000Z", "sensor1": 100, "sensor2": 0});
-    // }, 11000);
-
-     //setTimeout(() => {clearInterval(sub2)}, 12000);
-
-
-    //  setTimeout(() => {
-    //   this.myDashServ.dashboards[0].data[0].chartOptions.dataset.source = [{"timestamp": new Date(), "sensor1": 10, "sensor2": 100}]
-    //   this.myDashServ.dashboards[0].data[0].chartOptions.loadStatus = "Completed"
-    //  }, 9000)
-
-    // this.sub2 = setInterval(() => {
-    //   this.myDashServ.dashboards[0].data[2].chartOptions.dataset.source.push(
-    //     this.generateRandomMessage())
-    // }, 1000)
-
-    // setTimeout(() => {
-    //   clearInterval(this.sub2);
-    //   this.myDashServ.dashboards[0].data[2].chartOptions.loadStatus = "Completed"
-    // }, 12000)
   }
 
   processEvent(_data) {
@@ -166,34 +175,10 @@ export class AppComponent implements AfterViewInit {
         ev.subject.next(_data);
       });
     }
+  }
 
-    /*panel.chartOptions.dataset.source = [{}];
+  processCompletionEvent(_data) {
 
-    if (panel.panelId === 'rawTable') {
-      //clearInterval(this.sub2);
-
-      this.sub2 = setInterval(() => {
-        this.myDashServ.dashboards[0].data[2].chartOptions.dataset.source.push(
-          this.generateRandomMessage())
-      }, 1000)
-
-      setTimeout(() => {
-        clearInterval(this.sub2);
-        this.myDashServ.dashboards[0].data[2].chartOptions.loadStatus = "Completed"
-      }, 12000)
-    } else if (panel.panelId === 'barchart') {
-      clearInterval(this.sub1);
-
-      this.sub1 = setInterval(() => {
-        this.myDashServ.dashboards[0].data[0].chartOptions.dataset.source.push(
-          {"timestamp": new Date(), "sensor1": 10, "sensor2": 100});
-      }, 1000)
-
-      setTimeout(() => {
-        clearInterval(this.sub1)
-        this.myDashServ.dashboards[0].data[0].chartOptions.loadStatus = "Completed"
-      }, 12000);
-    }*/
   }
 
   myCallback() {

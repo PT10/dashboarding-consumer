@@ -1,0 +1,212 @@
+[
+    {
+      "name": "Default dashboard",
+      "data": [
+        {
+          "cols": 10,
+          "rows": 4,
+          "y": 1,
+          "x": 0,
+          "name": "Dataset",
+          "panelId": "barchart",
+          "chartLibrary": "echarts",
+          "chartOptions": {
+            "source": "sonicwall",
+            "sourceType": "kafka",
+            "searchQuery": "KafkaExport",
+            "searchQueryExtention": "| summarize count=count() by onesec=floor(timestamp, 1s)",
+            "realtime": true,
+            "showHeader": false,
+            "additionalParams": "dy1v9n",
+            "subscriptions": ["$var1(searchQuery)", "$timewindow(timeWindow)"],
+            "chartConfig": {
+              "legend": {},
+              "dataZoom": [{
+                    "id": "dataZoomX",
+                    "type": "slider",
+                    "xAxisIndex": [0],
+                    "filterMode": "filter"
+                }],
+              "tooltip": {
+                "trigger": "axis",
+                "showContent": true
+              },
+              "xAxis": {
+                "type": "time",
+                "axisLabel": {
+                  "rotate": 0,
+                  "width": 100,
+                  "overflow": "truncate"
+                }
+              },
+              "yAxis": {
+                "gridIndex": 0
+              },
+              "grid": {
+                "bottom": "25%"
+              },
+              "seriesMerge": true,
+              "uniqueMergeKeys": [
+                "onesec"
+              ],
+              "timeAxisSortField": "onesec",
+              "series": [
+                {
+                  "type": "bar",
+                  "connectNulls": true,
+                  "encode": {
+                    "x": "onesec",
+                    "y": "count"
+                  }
+                }
+              ]
+            },
+            "dataset": {
+              "dimensions": [
+                "onesec",
+                "count"
+              ],
+              "source": [{}]
+            }
+          }
+        },
+        {
+          "cols": 10,
+          "rows": 1,
+          "y": 0,
+          "x": 0,
+          "name": "Search",
+          "panelId": "search",
+          "chartLibrary": "primeng",
+          "chartOptions": {
+            "source": "sonicwall",
+            "sourceType": "kafka",
+            "searchQuery": "",
+            "searchQueryPrefix": ".export to table KafkaExport <| ",
+            "additionalParams": "",
+            "timewindow": [],
+            "realtime": false,
+            "showHeader": false,
+            "subscriptions": ["$var1(searchQuery)", "$timewindow(timeWindow)"],
+            "chartConfig": {
+              "chartType": "searchbar",
+              "emptyText": "Query",
+              "buttonText": "Search",
+              "value": "index",
+
+              "onQueryExecuted": "$var2"
+            },
+            "dataset": {
+              "source": []
+            }
+          }
+        },
+        {
+          "cols": 15,
+          "rows": 12,
+          "y": 5,
+          "x": 0,
+          "name": "Table",
+          "panelId": "rawTable",
+          "chartLibrary": "primeng",
+          "chartOptions": {
+            "source": "sonicwall",
+            "sourceType": "kafka",
+            "searchQuery": "KafkaExport",
+            "additionalParams": "dy1v9n",
+            "timeWindow": [],
+            "realtime": false,
+            "showHeader": false,
+            "executionDelayInMSec": 3000,
+            "subscriptions": ["$var1(searchQuery)", "$timewindow(timeWindow)"],
+            "chartConfig": {
+              "chartType": "table",
+              "showHeader": true,
+              "pagination": true,
+              "globalSearch": false,
+              "columnSearch": false,
+              "pageSize": 20,
+              "maxRecords": -1,
+              "seriesMerge": false,
+              "uniqueMergeKeys": [
+                "timestamp"
+              ],
+              "timeAxisSortField": "timestamp",
+              "columns": []
+            },
+            "dataset": {
+              "source": []
+            }
+          }
+        }, {
+          "cols": 5,
+          "rows": 1,
+          "y": 3,
+          "x": 8,
+          "name": "Time",
+          "panelId": "timewindow",
+          "chartLibrary": "primeng",
+          "chartOptions": {
+            "source": "sonicwall",
+            "sourceType": "kafka",
+            "searchQuery": "",
+            "realtime": false,
+            "showHeader": false,
+            "chartConfig": {
+              "chartType": "timerange",
+              "label": "Time range",
+              "value": [],
+              "onEvent": "$timewindow"
+            },
+            "dataset": {
+              "source": []
+            }
+          }
+        }, {
+          "cols": 5,
+          "rows": 4,
+          "y": 1,
+          "x": 10,
+          "name": "Single",
+          "panelId": "panel_2",
+          "chartLibrary": "primeng",
+          "chartOptions": {
+            "source": "sonicwall",
+            "sourceType": "kafka",
+            "searchQuery": "KafkaExport",
+            "searchQueryExtention": "| extend dummy = '1' | summarize count=count() by dummy",
+            "subscriptions": ["$var1(searchQuery)", "$timewindow(timeWindow)"],
+            "additionalParams": "dy1v9n",
+            "showHeader": false,
+            "chartConfig": {
+              "chartType": "single",
+              "seriesName": "Total",
+              "font-size": "80px",
+              "font-weight": "600",
+              "seriesMerge": true,
+              "uniqueMergeKeys": [
+                "dummmy"
+              ],
+              "tooltip": {
+                "show": false
+              },
+              "legend": {
+                "show": false
+              }
+            },
+            "dataset": {
+              "dimensions": [
+                "count"
+              ],
+              "source": [
+              ]
+            }
+          }
+        }
+      ],
+      "options": {
+        "default": true
+      }
+    }
+  ]
+  

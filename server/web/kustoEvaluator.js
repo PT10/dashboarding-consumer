@@ -233,6 +233,29 @@ exports.generic = class Generic {
         }
         return result;
     }
+
+    getState(state) {
+        state['text'] = this.text;
+        state['state'] = [];
+        for (var i=0; i < this.children.length; ++i) {
+            state['state'].push(this.children[i].getState({}));
+        }
+        return state;
+    }
+
+    loadState(state) {
+        for (var i=0; i < this.children.length; ++i) {
+            this.children[i].loadState(state['state'][i]);
+        }
+    }
+
+    toJSON() {
+        var json = [this.kindInt, this.simpleName, this.literalValue, []];
+        for (var i=0; i < this.children.length; ++i) {
+            json[3].push(this.children[i].toJSON());
+        }        
+        return json;
+    }
 }
 
 class SetOptionStatement extends   exports.generic {
@@ -732,15 +755,13 @@ class FilterOperator  extends this.generic {
 
 
 
-exports.mvapply = class MvApplyOperator  extends this.generic {
-    static totalTime = 0;
+class MvApplyOperator  extends this.generic {
     constructor(kindInt, kind, text, simpleName, literalValue, isLiteral, resultType) {
         super(kindInt, kind, text, simpleName, literalValue, isLiteral, resultType);
     }
     
     evaluate(context, result) {
         this.begin();
-        const begin = new Date().valueOf();
         var resultTable = [];
         var j;
         for (j=1; j < result.length; ++j) {
@@ -793,12 +814,10 @@ exports.mvapply = class MvApplyOperator  extends this.generic {
         // Filter operator doesn't add or change data types
         resultTable.unshift(result[0]);
         this.end();
-        exports.mvapply.totalTime += new Date().valueOf() - begin;
         return resultTable;
     }
 }
-exports.summarizeOp = class SummarizeOperator  extends this.generic {
-    static totalTime = 0;
+class SummarizeOperator  extends this.generic {
     summarizedResults = {};
     emitHistory = {};
     constructor(kindInt, kind, text, simpleName, literalValue, isLiteral, resultType) {
@@ -814,6 +833,55 @@ exports.summarizeOp = class SummarizeOperator  extends this.generic {
 
     init() {
         this.summarizedResults = {};
+        this.emitHistory = {};
+
+        // Clear out cache of summary functions
+        for (var i=0; i < this.children.length; ++i) {
+            this.children[i].init();
+        }
+    }
+
+    getState(state) {
+        state['state'] = [];
+        state['text'] = this.text;
+
+        for (var i=0; i < this.children.length; ++i) {
+            state['state'].push(this.children[i].getState({}));
+        }
+
+        state['summarizedResults'] = this.summarizedResults;
+        return state;
+    }
+
+    loadState(state) {
+        this.summarizedResults = state['summarizedResults'];
+        for (var i=0; i < this.children.length; ++i) {
+            this.children[i].loadState(state['state'][i]);
+        }
+
+        for (var byResultKey of Object.keys(this.summarizedResults)) {
+            var byResult = {};
+            byResult["__key__"] = byResultKey;
+            for (var i=0; i < this.children[2].children.length; ++i) {
+                var aggregate = this.children[2].children[i];
+                if (aggregate.kind == 'CommaToken') {
+                    continue;
+                }
+                // Note the byResult becomes context for the aggregate expression evaluation
+                // byResult contains original columns and columns newly added by the by clause
+                //var aggregateResult = aggregate.evaluate(byResult, this.summarizedResults[byResultKey][i]);
+                var aggregateResult = aggregate.evaluate(byResult, null);
+                // If it was a Simple Named Expression then the new column will come back in array itself
+                // Other it will be tuple returned by Function Call Expression
+                //debug_log("Aggregate result is " + JSON.stringify(aggregateResult));
+                if (Array.isArray(aggregateResult)) {
+                    this.summarizedResults[byResultKey][i][aggregateResult[0]] = aggregateResult[1];
+                }
+                else {
+                    this.summarizedResults[byResultKey][i] = { ... this.summarizedResults[byResultKey][i],  ... aggregateResult }
+                }
+            }
+        }
     }
     
     evaluate(context, result) {
@@ -848,6 +916,9 @@ exports.summarizeOp = class SummarizeOperator  extends this.generic {
             } 
             var byResultKey = Object.values(byClauseResult).join();
             changedKeys.add(byResultKey);
+
+            // Add it to byResult so that downstream aggregate operators can use it
+            byResult["__key__"] = byResultKey;
 
             if (this.emitHistory[byResultKey] == null) {
                 this.emitHistory[byResultKey] = { lastEmitTime : Date.now(), lastUpdateTime : Date.now()};
@@ -884,6 +955,7 @@ exports.summarizeOp = class SummarizeOperator  extends this.generic {
                     continue;
                 }
                 // Note the byResult becomes context for the aggregate expression evaluation
+                // byResult contains original columns and columns newly added by the by clause
                 var aggregateResult = aggregate.evaluate(byResult, this.summarizedResults[byResultKey][i]);
                 // If it was a Simple Named Expression then the new column will come back in array itself
                 // Other it will be tuple returned by Function Call Expression
@@ -944,7 +1016,6 @@ exports.summarizeOp = class SummarizeOperator  extends this.generic {
 
         //debug_log("Final summarized results are : " + JSON.stringify(resultTable));
         this.end();
-        exports.summarizeOp.totalTime += begin.valueOf() - new Date().valueOf()
         return resultTable;
     }
 
@@ -952,7 +1023,7 @@ exports.summarizeOp = class SummarizeOperator  extends this.generic {
         var resultTable = [];
         for (const key of Object.keys(this.summarizedResults)) {
             // Emit all keys which are waiting for emit_interval to be over
-            if ((Date.now() - this.emitHistory[key].lastEmitTime) < options["emit_interval"]) {
+            if ((this.emitHistory[key] == null) || options["emit_interval"] == null || (Date.now() - this.emitHistory[key].lastEmitTime) < options["emit_interval"]) {
                 var value = this.summarizedResults[key];
                 // Merge all aggregates into one dictionary
                 // TBD: There could be column name clashes
@@ -960,7 +1031,10 @@ exports.summarizeOp = class SummarizeOperator  extends this.generic {
                 // For downstream operators to determine where the add or update during incremental processing
                 mergedRow["__key__"] = key;
                 resultTable.push(mergedRow);
-                                  
+
+                if (this.emitHistory[key] == null)
+                    this.emitHistory[key] = {};
+
                 this.emitHistory[key].lastEmitTime = Date.now();
                 this.emitHistory[key].emitted = true;
             }
@@ -977,6 +1051,10 @@ class NameReference  extends this.generic {
     
     evaluate(context, result) {
         //debug_log("In NameReference");
+        // In 'null' result case just return null (this will happen in loadState call)
+        if (result == null)
+            return [null, null];
+
         if (result != null & result[this.simpleName] != null) {
             var value = result[this.simpleName];
             if (this.resultType == "long" || this.resultType == "int")
@@ -1000,7 +1078,12 @@ class NameReference  extends this.generic {
                     value = parseInt(value);
                 result = [this.simpleName, value];            }
         }
+        else if (context["__type__"] == "table") {
+            // In table context return empty result
+            return [this.resultTypeMap];
+        }
         else {
+            // Scalar context
             //debug_log("NameReference not found : " + this.simpleName + " context is " + JSON.stringify(context));
             result = [null, null];
         }
@@ -1087,14 +1170,12 @@ class TimespanLiteralExpression  extends this.generic {
     }
 }
 
-exports.simpleNameExpr = class SimpleNamedExpression  extends this.generic {
-    static totalTime = 0;
+class SimpleNamedExpression  extends this.generic {
     constructor(kindInt, kind, text, simpleName, literalValue, isLiteral, resultType) {
         super(kindInt, kind, text, simpleName, literalValue, isLiteral, resultType);
     }
     
     evaluate(context, result) {
-        const start = Date.now().valueOf()
         //debug_log("Command SimpleNamedExpression: " + this.text);
         // c = a + b
         // Expect three children: LHS assignment, "=" token, RHS expression
@@ -1107,8 +1188,6 @@ exports.simpleNameExpr = class SimpleNamedExpression  extends this.generic {
         //debug_log("Returning SimpleNamedExpression " + JSON.stringify(result));
         var temp = {};
         temp[lhsVar] = rhs[1];
-        const end = Date.now().valueOf()
-        exports.simpleNameExpr.totalTime += end - start;
         return temp;
     }
 
@@ -1291,8 +1370,43 @@ class SummarizeByClause  extends this.generic {
 }
 
 class FunctionCallExpression  extends this.generic {
+    evaluator = null;
     constructor(kindInt, kind, text, simpleName, literalValue, isLiteral, resultType) {
         super(kindInt, kind, text, simpleName, literalValue, isLiteral, resultType);
+    }
+
+    init() {
+        // Clear out the function cache
+        if (this.evaluator != null) {
+            this.evaluator.init();
+        }
+    }
+
+    getState(state) {
+        if (this.evaluator == null) {
+            // evaluator may be null if the first query itself is loaded from cache
+            var funcName = this.children[0].simpleName;
+            var funcCall = funcMap[funcName];
+            if (funcCall != null) {
+                this.evaluator = new funcCall();
+            }
+        }
+        state['text'] = this.text;
+        state['state'] = this.evaluator.getState({});
+        return state;
+    }
+
+    loadState(state) {
+        if (this.evaluator == null) {
+            // evaluator may be null if the first query itself is loaded from cache
+            var funcName = this.children[0].simpleName;
+            var funcCall = funcMap[funcName];
+            if (funcCall != null) {
+                this.evaluator = new funcCall();
+            }
+        }
+
+        this.evaluator.loadState(state['state']);
     }
     
     evaluate(context, result) {
@@ -1307,13 +1421,12 @@ class FunctionCallExpression  extends this.generic {
         var params = this.children[1].evaluate(context, result);
         var funcCall = funcMap[funcName];
         if (funcCall != null) {
-            //debug_log("Calling " + funcName + " with parameters " + JSON.stringify(params) + " and context " + JSON.stringify(context) + " and result " + JSON.stringify(result));
-            //if (context["__type__"] == "table")
-                var result = funcCall(context, result, params);
-                this.end();
-                return [funcName + "_", result];
-            //else
-            //    return [funcName + "_", funcCall(params)];
+            if (this.evaluator == null)
+                this.evaluator = new funcCall();
+            
+            var result = this.evaluator.evaluate(context, result, params);
+            this.end();
+            return [funcName + "_", result];                
         }
         else {
             //debug_log("Unsupported function " + funcName);
@@ -1422,196 +1535,351 @@ class EqualExpression  extends this.generic {
     }
 }
 
-function kStrcat(context, result, params) {
-    var concatResult="";
-    for (var i=0; i < params.length; ++i) {
-        if (params[i] != null && params[i][1] != null)
-            concatResult += params[i][1];
-    }
-    return concatResult;
-}
-
-function kStrlen(context, result, params) {
-    if (!params[0][1])
-        return 0;
-    // Convert to string by prefixing empty string
-    return (""+params[0][1]).length;
-}
-
-function kToLong(context, result, params) {
-    if (!params[0][1])
-        return null;
-    return parseInt(params[0][1]);
-}
-
-function kToReal(context, result, params) {
-    if (!params[0][1])
-        return null;
-    return parseFloat(params[0][1]);
-}
-
-function kToString(context, result, params) {
-    if (!params[0][1])
-        return null;
-    if (typeof params[0][1] == 'object' &&
-        params[0][1].constructor.name == 'Date') {
-            return params[0][1].toISOString();
-    }
-    else {
-        return params[0][1].toString();
-    }
-}
-
-function kFloor(context, result, params) {
-    value = new Date(params[0][1]).valueOf();
-    roundTo = params[1][1];
-    return Math.floor(value/roundTo)*roundTo;
-}
-function kExtractAll(context, result, params) {
-    var begin = Date.now();
-    var regex = new RegExp(params[0][1], 'g');
-    var match;
-    var allMatches = [];
-    if (params.length == 2) {
-        while (match = regex.exec(params[1][1])) {
-            var matches = [];
-            for (var i=1; i < match.length; ++i)
-                matches.push(match[i]);
-            allMatches.push(matches);
+class Strcat extends this.generic {
+    evaluate(context, result, params) {
+        var concatResult="";
+        for (var i=0; i < params.length; ++i) {
+            if (params[i] != null && params[i][1] != null)
+                concatResult += params[i][1];
         }
-    }
-    else {
-        while (match = regex.exec(params[2][1])) {
-            var captureGroups = params[1][1];
-            var matches = [];
-            for (var i=0; i < captureGroups.length; ++i) {
-                matches.push(match[captureGroups[i][1]]);
-            }
-            allMatches.push(matches);
-        }
-    }
-    debug_log("extract_all " + " took " + (Date.now() - begin));
-
-    if (allMatches.length > 0)
-        return allMatches;
-    else
-        return null;
-}
-
-function kExtractJSON(context, result, params) {
-    // TBD:: Support type conversion
-    var f = new Function('jsonText', 'var $ = JSON.parse(jsonText); return ' + params[0][1] + ';');
-    try {
-        return f(params[1][1]);
-    }
-    catch (err) {
-        console.log("Error in JSON extraction " + params[0][1]);
+        return concatResult;
     }
 }
 
-function kReplace(context, result, params) {
-    var regex = new RegExp(params[0][1], 'g');
-    if (params[2][1] != null) {
-        return params[2][1].replace(regex, params[1][1]);
-    }
-
-    return null;
-}
-
-function kToDateTime(context, result, params) {
-    if (params[0][1] != null) {
-        return new Date(Date.parse(params[0][1]));
-    }
-
-    return null;
-}
-
-function kIsNotNull(context, result, params) {
-    return (params[0][1] != null)
-}
-
-function kIsNull(context, result, params) {
-    return (params[0][1] == null)
-}
-
-function kCount(context, result, params) {
-    if (!result["__value__"]) {
-        result["__value__"] = 0;
-    }
-    ++result["__value__"];
-    return result["__value__"];
-}
-
-function kDCount(context, result, params) {
-    if (!params[0][1]) {
-        if (result["__value__"])
-            return result["__value__"].size;
-        else
+class Strlen extends this.generic {
+    evaluate(context, result, params) {
+        if (!params[0][1])
             return 0;
+        // Convert to string by prefixing empty string
+        return (""+params[0][1]).length;
     }
-
-    if (!result["__value__"]) {
-        result["__value__"] =  new Set();
-    }
-    result["__value__"].add(params[0][1]);
-    return result["__value__"].size;
 }
 
-function kSum(context, result, params) {
-    if (!params[0][1])
-        return result["__value__"];
-
-    if (!result["__value__"]) {
-        result["__value__"] = 0.0;
+class ToLong extends this.generic {
+    evaluate(context, result, params) {
+        if (!params[0][1])
+            return null;
+        return parseInt(params[0][1]);
     }
-    result["__value__"] = result["__value__"] + params[0][1];
-    return result["__value__"];
 }
 
-function kMakeBag(context, result, params) {
-    if (!params[0][1])
+class ToReal extends this.generic {
+    evaluate(context, result, params) {
+        if (!params[0][1])
+            return null;
+        return parseFloat(params[0][1]);
+    }
+}
+
+class ToString extends this.generic {
+    evaluate(context, result, params) {
+        if (!params[0][1])
+            return null;
+        if (typeof params[0][1] == 'object' &&
+            params[0][1].constructor.name == 'Date') {
+                return params[0][1].toISOString();
+        }
+        else {
+            return params[0][1].toString();
+        }
+    }
+}
+
+class Floor extends this.generic {
+    evaluate(context, result, params) {
+        var value = params[0][1];
+        var roundTo = params[1][1];
+        return Math.floor(value/roundTo)*roundTo;
+    }
+}
+
+class ExtractAll extends this.generic {
+    evaluate(context, result, params) {
+        var begin = Date.now();
+        var regex = new RegExp(params[0][1], 'g');
+        var match;
+        var allMatches = [];
+        if (params.length == 2) {
+            while (match = regex.exec(params[1][1])) {
+                for (var i=1; i < match.length; ++i)
+                    allMatches.push(match[i]);
+            }
+        }
+        else {
+            while (match = regex.exec(params[2][1])) {
+                var captureGroups = params[1][1];
+                var matches = [];
+                for (var i=0; i < captureGroups.length; ++i) {
+                    matches.push(match[captureGroups[i][1]]);
+                }
+                allMatches.push(matches);
+            }
+        }
+        debug_log("extract_all " + " took " + (Date.now() - begin));
+
+        if (allMatches.length > 0)
+            return allMatches;
+        else
+            return null;
+    }
+}
+
+class ExtractJSON extends this.generic {
+    evaluate(context, result, params) {
+        // TBD:: Support type conversion
+        var f = new Function('jsonText', 'var $ = JSON.parse(jsonText); return ' + params[0][1] + ';');
+        try {
+            return f(params[1][1]);
+        }
+        catch (err) {
+            console.log("Error in JSON extraction " + params[0][1]);
+        }
+    }
+}
+
+class Replace extends this.generic {
+    evaluate(context, result, params) {
+        var regex = new RegExp(params[0][1], 'g');
+        if (params[2][1] != null) {
+            return params[2][1].replace(regex, params[1][1]);
+        }
+
+        return null;
+    }
+}
+
+class ToDateTime extends this.generic {
+    evaluate(context, result, params) {
+        if (params[0][1] != null) {
+            return new Date(Date.parse(params[0][1]));
+        }
+
+        return null;
+    }
+}
+
+class IsNotNull extends this.generic {
+    evaluate(context, result, params) {
+        return (params[0][1] != null)
+    }
+}
+
+class IsNull extends this.generic {
+    evaluate(context, result, params) {
+        return (params[0][1] == null)
+    }
+}
+
+class Count extends this.generic {
+    state = {};
+
+    init() {
+        this.state = {};
+    }
+    
+    getState(state) {
+        state['state'] = this.state;
+        state['text'] = this.text;
+        return state;
+    }
+
+    loadState(newstate) {
+        for (var key of Object.keys(newstate['state'])) {
+            if (this.state[key] != null) {
+                this.state[key] += newstate['state'][key];
+            }
+            else {
+                this.state[key] = newstate['state'][key];
+            }
+        }
+    }
+
+    evaluate (context, result, params) {
+        if (result == null) {
+            return this.state[context["__key__"]];
+        }
+        else if (!this.state[context["__key__"]])
+            this.state[context["__key__"]] = 0;
+
+        ++this.state[context["__key__"]];
+        return this.state[context["__key__"]];
+    }
+}
+
+class DCount extends this.generic {
+    state = {};
+
+    init() {
+        this.state = {};
+    }
+    
+    getState(state) {
+        state['state'] = [];
+        for (var key of this.state) {
+            state['state'][key] = [];
+            for (var el of Object.keys(this.state[key])) {
+                state['state'][key].push(el);
+            }
+        }
+        state['text'] = this.text;
+        return state;
+    }
+
+    loadState(newstate) {
+        for (var key of Object.keys(newstate['state'])) {
+            if (this.state[key] != null) {
+                newstate['state'][key].forEach(item => this.state[key].add(item));
+            }
+            else {
+                this.state[key] = new Set(newstate['state'][key]);
+            }
+        }
+    }
+
+    evaluate(context, result, params) {
+        if (result == null) {
+            return this.state[context["__key__"]].size;
+        }
+
+        if (!params[0][1]) {
+            if (this.state[context["__key__"]])
+                return this.state[context["__key__"]].size;
+            else
+                return 0;
+        }
+
+        if (this.state[context["__key__"]]) {
+            this.state[context["__key__"]] =  new Set();
+        }
+
+        this.state[context["__key__"]].add(params[0][1]);
+        return this.state[context["__key__"]].size;
+    }
+}
+
+class Sum extends this.generic {
+    state = {};
+    
+    init() {
+        this.state = {};
+    }
+    
+    getState(state) {
+        state['state'] = this.state;
+        state['text'] = this.text;
+        return state;
+    }
+
+    loadState(newstate) {
+        for (var key of Object.keys(newstate['state'])) {
+            if (this.state[key] != null) {
+                this.state[key] += newstate['state'][key];
+            }
+            else {
+                this.state[key] = newstate['state'][key];
+            }
+        }
+    }
+
+    evaluate(context, result, params) {
+        if (result == null) {
+            return this.state[context["__key__"]];
+        }
+
+        if (!params[0][1]) {
+            if (this.state[context["__key__"]])
+                return this.state[context["__key__"]];
+            else
+                return 0;
+        }
+
+        if (!this.state[context["__key__"]]) {
+            this.state[context["__key__"]] = 0.0;
+        }
+        this.state[context["__key__"]] = this.state[context["__key__"]]+ params[0][1];
+        return this.state[context["__key__"]];
+        }
+}
+
+class Avg extends this.generic {
+    state = {};
+
+    init() {
+        this.state = {};
+    }
+    
+    evaluate(context, result, params) {
+        if (!params[0][1]) {
+            if (this.state[context["__key__"]])
+                return this.state[context["__key__"]][0]/this.state[context["__key__"]][1];
+            else
+                return null;
+        }
+
+        if (!this.state[context["__key__"]]) {
+            this.state[context["__key__"]] = [0.0, 0.0];
+        }
+        this.state[context["__key__"]][0] = this.state[context["__key__"]][0] + params[0][1];
+        ++this.state[context["__key__"]][1];
+        return this.state[context["__key__"]][0]/this.state[context["__key__"]][1];
+    }
+}
+
+class MakeBag extends this.generic {
+    state = {};
+
+    init() {
+        this.state = {};
+    }
+    
+    evaluate(context, result, params) {
+        if (!params[0][1])
         return;
 
-    if (!result["__value__"]) {
-        result["__value__"] = {};
+        if (!this.state[context["__key__"]]) {
+            this.state[context["__key__"]] = {};
+        }
+        if (params[0][1].constructor == Object) {
+            this.state[context["__key__"]] = { ... params[0][1], ... this.state[context["__key__"]] };
+        }
+        return this.state[context["__key__"]];
     }
-    if (params[0][1].constructor == Object) {
-        result["__value__"] = { ... params[0][1], ... result["__value__"] };
-    }
-    return result["__value__"];
 }
 
-function kPack(context, result, params) {
-    var packResult = {};
-    for (var i=0; i < params.length; i=i+2) {
-        packResult[params[i][1]] = params[i+1][1];
+class Pack extends this.generic {
+    evaluate(context, result, params) {
+        var packResult = {};
+        for (var i=0; i < params.length; i=i+2) {
+            packResult[params[i][1]] = params[i+1][1];
+        }
+        return packResult;
     }
-    return packResult;
 }
 
 var funcMap = {
     // Scalar functions
-    "floor" : kFloor,
-    "bin" : kFloor,
-    "tostring" : kToString,
-    "tolong" : kToLong,
-    "toreal" : kToReal,
-    "todouble" : kToReal,
-    "extract_all" : kExtractAll,
-    "extractjson" : kExtractJSON,
-    "isnotnull" : kIsNotNull,
-    "isnull" : kIsNull,
-    "pack": kPack,
-    "replace" : kReplace,
-    "todatetime" : kToDateTime,
-    "strcat" : kStrcat,
-    "strlen" : kStrlen,
+    "floor" : Floor,
+    "bin" : Floor,
+    "tostring" : ToString,
+    "tolong" : ToLong,
+    "toreal" : ToReal,
+    "todouble" : ToReal,
+    "extract_all" : ExtractAll,
+    "extractjson" : ExtractJSON,
+    "isnotnull" : IsNotNull,
+    "isnull" : IsNull,
+    "pack": Pack,
+    "replace" : Replace,
+    "todatetime" : ToDateTime,
+    "strcat" : Strcat,
+    "strlen" : Strlen,
 
     // Aggregation functions
-    "count" : kCount,
-    "dcount" : kDCount,
-    "sum" : kSum,
-    "make_bag" : kMakeBag
+    "count" : Count,
+    "dcount" : DCount,
+    "sum" : Sum,
+    "avg" : Avg,
+    "make_bag" : MakeBag
 }
 
 var evaluatePluginMap = {
@@ -1626,12 +1894,12 @@ var classMap = {
     "ProjectOperator": ProjectOperator,
     "ExtendOperator": ExtendOperator,
     "FilterOperator": FilterOperator,
-    "SummarizeOperator": exports.summarizeOp,
+    "SummarizeOperator": SummarizeOperator,
     "CountOperator": CountOperator,
     "TakeOperator": TakeOperator,
     "EvaluateOperator": EvaluateOperator,
     "SearchOperator": SearchOperator,
-    "MvApplyOperator": exports.mvapply,
+    "MvApplyOperator": MvApplyOperator,
     "ProjectRenameOperator" : ProjectRenameOperator,
 
     // Expressions
@@ -1640,7 +1908,7 @@ var classMap = {
     "SummarizeByClause": SummarizeByClause,
 
     "AddExpression": AddExpression,
-    "SimpleNamedExpression": exports.simpleNameExpr,
+    "SimpleNamedExpression": SimpleNamedExpression,
     "ElementExpression": ElementExpression,
     "ContainsExpression": ContainsExpression,
     "NotContainsExpression": NotContainsExpression,

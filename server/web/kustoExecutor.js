@@ -1,7 +1,6 @@
 const Generic = require('./kustoEvaluator.js').generic;
 const traverse = require('./kustoEvaluator.js').traverse;
 const stringToDataType = require('./kustoEvaluator.js').stringToDataType;
-const mvapply = require('./kustoEvaluator.js').mvapply;
 var EventEmitter = require('events');
 const csv = require('csv-parser');
 const fs = require('fs')
@@ -20,6 +19,7 @@ const { debug } = require('console');
 const mongodb = require('mongodb').MongoClient;
 const avro = require('avsc');
 const TopicPartition = require('node-rdkafka/lib/topic-partition.js');
+const crypto = require('crypto');
 
 
 function pivotTable(inputTable) {
@@ -98,10 +98,12 @@ class KafkaHandler extends EventEmitter {
     consumer;
     pivot;
     realTime;
+    producer = null;
+    producerReady = false;
 
     from_offset = 0;
     to_offset = 0;
-    visited = 0;
+    visited = -1;
     numPartitions = 1;
     fromTimestamp; //1199133000000;
     toTimestamp; //1199140200000;
@@ -115,11 +117,13 @@ class KafkaHandler extends EventEmitter {
     partitionsCompleted = new Set();
     avroType;
     committedOffsetMap = null;
+    tableAlias = null;
 
     constructor(evaluatorTree, table, kafkaUrlTopic, columns, startTime, endTime, pivot, realTime) {
         super();
         this.evaluatorTree = evaluatorTree;
         this.table = table;
+        this.tableAlias = table;
         this.columns = columns;
         //{this.kafkaUrl, this.topic, this.groupId, this.numPartitions} = kafkaUrlTopic;
         Object.assign(this, kafkaUrlTopic);
@@ -134,6 +138,11 @@ class KafkaHandler extends EventEmitter {
         this.endTime = typeof endTime === 'number' ? endTime : Date.parse(endTime);
         this.pivot = pivot;
         this.realTime = realTime;
+        
+    }
+
+    setTableAlias(alias) {
+        this.tableAlias = alias;
     }
 
     cancel() {
@@ -146,14 +155,14 @@ class KafkaHandler extends EventEmitter {
             'metadata.broker.list': this.kafkaUrl, //192.168.33.15:9090
             'enable.auto.commit': true,
             'queued.max.messages.kbytes': 10240,
-        }, { 'auto.offset.reset' : 'latest'});
+        }, { 'auto.offset.reset' : 'earliest'});
         
         var timeout = 20000; // 10 seconds
         this.consumer.connect();
         
         this.from_offset = 0;
         this.to_offset = 0;
-        this.visited = 0;
+        this.visited = -1;
         this.fromTimestamp = this.startTime; //1199133000000;
         this.toTimestamp = this.endTime; //1199140200000;
         this.currentCount = 0;
@@ -165,7 +174,7 @@ class KafkaHandler extends EventEmitter {
         //console.log('--------- EndTime: ' + this.toTimestamp)
         
         this.wsData =  { "__type__": "table"};
-        this.wsData[this.table] = [];
+        this.wsData[this.tableAlias] = [];
         
         this.consumer
             .on('ready', async () => {
@@ -190,6 +199,13 @@ class KafkaHandler extends EventEmitter {
             for (var i=0; i < this.numPartitions; ++i) {
                 tpObjectList.push(TopicPartition.create( { topic: this.topic, partition: i, offset: 0}));
             }
+
+            // Wait for topic to be available
+            while(this.visited!=0) {
+                this.waitForTopicCreation();
+                await new Promise(r => setTimeout(r, 1000));
+            }
+
             this.consumer.committed(tpObjectList, timeout, (err, offsetMap) => {
                 this.committedOffsetMap = offsetMap;
                 this.visited = 1;
@@ -223,7 +239,7 @@ class KafkaHandler extends EventEmitter {
             }
 
             var data =  { "__type__": "table"};
-            data[this.table] = [];
+            data[this.tableAlias] = [];
 
             var result = this.evaluatorTree.flush(data, []);
 
@@ -238,6 +254,18 @@ class KafkaHandler extends EventEmitter {
         })        
     }
 
+    waitForTopicCreation() {
+        this.consumer.getMetadata(null,(err, metadata) => {
+            // Now you have the metadata
+            for (var i=0; i < metadata.topics.length; ++i) {
+                if (metadata.topics[i]['name'] == this.topic) {
+                    console.log("Topic found proceeding ...");
+                    this.visited = 0;
+                    return;
+                }
+            }
+         });
+    }
     /*
     countOffset(err, offsetMap){
         console.log("to offset is " + offsetMap[0]["offset"]);
@@ -269,7 +297,8 @@ class KafkaHandler extends EventEmitter {
     }
     
     callbackConsume(err, messages) {
-        //console.log("In consumerCallback " + messages.length);
+        console.log("In consumerCallback " + messages.length);
+        console.log("In consumerCallback Error " + err);
 
         this.currentCount += messages.length;
         if (messages.length > 0)
@@ -281,11 +310,20 @@ class KafkaHandler extends EventEmitter {
                 if (this.avroType == null) {
                     messageObj = JSON.parse(message.value.toString());
 
+                    // For internal Kafka source in which headers will come as message
+                    if (messageObj["__header__"]) {
+                        this.columns = [];
+                        for (var i=0; i < messageObj["__header__"].length; ++i) {
+                            this.columns.push( { "Name" : messageObj["__header__"][i]["name"], "CslType" : messageObj["__header__"][i]["type"]});
+                        }
+                        return;
+                    }
+
                     for (var i=0; i < this.columns.length; ++i) {
                         if (this.columns[i].CslType == 'datetime')
                             messageObj[this.columns[i].Name] = Date.parse(messageObj[this.columns[i].Name]);
                     }
-                    this.wsData[this.table].push(messageObj);
+                    this.wsData[this.tableAlias].push(messageObj);
                 }
                 else {
                     messageObj = this.avroType.fromBuffer(message.value);
@@ -296,7 +334,7 @@ class KafkaHandler extends EventEmitter {
                                 if (this.columns[j].CslType == 'datetime')
                                     messageObj["contents"][i][this.columns[j].Name] = Date.parse(messageObj["contents"][i][this.columns[j].Name]);
                             }
-                            this.wsData[this.table].push(messageObj["contents"][i]);
+                            this.wsData[this.tableAlias].push(messageObj["contents"][i]);
                         }
                     }
                 }
@@ -324,7 +362,7 @@ class KafkaHandler extends EventEmitter {
             }
         })
     
-        if ((this.wsData[this.table].length >= this.processingBatchSize) || (!this.inProgress)) {
+        if ((this.wsData[this.tableAlias].length >= this.processingBatchSize) || (!this.inProgress)) {
             const result = this.evaluatorTree.evaluate(this.wsData, {});
             if (result && result.length > 1)
                this.emit("data", this.pivot ? pivotTable(result) : result);
@@ -332,13 +370,84 @@ class KafkaHandler extends EventEmitter {
             resultMap[panelId]['conn'].sendUTF(JSON.stringify(
                 {active: 0, data: result}));
                 */
-            this.wsData[this.table] = [];
+            this.wsData[this.tableAlias] = [];
         }
 
         // Schedule next batch to process
         if (this.inProgress)
             this.consumer.consume(this.batchSize, this.callbackConsume.bind(this));
 
+    }
+
+    update(inputData) {
+        //console.log(inputData);
+        if (this.producer == null) {
+            this.producer = new Kafka.Producer({
+                'metadata.broker.list': this.kafkaUrl,
+                'dr_cb': true
+              });
+        }
+        if (this.producerReady == false) {
+            // Connect to the broker manually
+            this.producer.connect();
+
+            // Wait for the ready event before proceeding
+            this.producer.on('ready', () => {
+                this.producerReady = true;
+                this.sendMessage(inputData);
+            });
+
+            // Any errors we encounter, including connection errors
+            this.producer.on('event.error', function(err) {
+            console.error('Error from producer');
+            console.error(err);
+            })
+
+            // We must either call .poll() manually after sending messages
+            // or set the producer to poll on an interval (.setPollInterval).
+            // Without this, we do not get delivery events and the queue
+            // will eventually fill up.
+            this.producer.setPollInterval(100);
+        }
+        else {
+            this.sendMessage(inputData);
+        }
+    }
+
+    sendMessage(inputData) {
+        // Find the timestamp column from header
+        var timestampColumn = null;
+        for (var i=0; i < inputData[0]["__header__"].length; ++i) {
+            if (inputData[0]["__header__"][i]["type"] == "datetime") {
+                timestampColumn = inputData[0]["__header__"][i]["name"];
+                break;
+            }
+        }
+        for (var i=0; i < inputData.length; ++i) {
+            try {
+                // Note: Send timestamp of the first record as timestamp of the header record
+                var timestampValue = timestampColumn != null ? inputData[i == 0 ? i + 1 : i][timestampColumn].getTime() : null;
+                this.producer.produce(
+                    // Topic to send the message to
+                    this.topic,
+                    // optionally we can manually specify a partition for the message
+                    // this defaults to -1 - which will use librdkafka's default partitioner (consistent random for keyed messages, random for unkeyed messages)
+                    null,
+                    // Message to send. Must be a buffer
+                    Buffer.from(JSON.stringify(inputData[i])),
+                    // for keyed messages, we also specify the key - note that this field is optional
+                    inputData[i]["__key__"], // TBD: Need to check this
+                    // you can send a timestamp here. If your broker version supports it,
+                    // it will get added. Otherwise, we default to 0
+                    timestampValue,
+                    // you can send an opaque token here, which gets passed along
+                    // to your delivery reports
+                    );
+            } catch (err) {
+                console.error('A problem occurred when sending our message');
+                console.error(err);
+            }
+        }
     }
 
 }
@@ -364,8 +473,9 @@ class FileHandler extends EventEmitter {
     }
 
     cancel() {
-        if (this.readStream)
+        if (this.readStream) {
             this.readStream.destroy();
+        }
     }
 
     process() {
@@ -485,19 +595,12 @@ class FileHandler extends EventEmitter {
               data[this.table].push({ "line" : line} );
             
               if (data[this.table].length == 10000) {
-                  console.log(new Date().toISOString() + " Read 10K lines")
                 lr.pause();
                 var begin = Date.now()
                 var result = this.evaluatorTree.evaluate(data, {});
-                // console.log(new Date().toISOString() + " Processed 10K lines" + 
-                // " mvApply Time: " + mvapply.totalTime)
-
-                mvapply.totalTime = 0;
-                
                 if (result && result.length > 1)
-                  this.emit("data", this.pivot ? pivotTable(result): result);
-                
-                  //this.evaluatorTree.printStats();
+                    this.emit("data", this.pivot ? pivotTable(result): result);
+                //this.evaluatorTree.printStats();
                 //console.log("Evaluator took " + (Date.now()-begin));
                 //console.log("OUTPUT: " + result);
                 data[this.table] = [];
@@ -562,7 +665,7 @@ class SplunkHandler extends EventEmitter {
     }
 
     cancel() {
-        console.log("Destroying request");
+        //console.log("Destroying request");
         if (this.request)
             this.request.abort();
     }
@@ -578,7 +681,7 @@ class SplunkHandler extends EventEmitter {
         var auth = 'Basic ' + Buffer.from(this.username + ':' + this.password).toString('base64');
 
         var postParams = querystring.stringify(params);
-        console.log(querystring.stringify(params));
+        //console.log(querystring.stringify(params));
         const options = {
             hostname: this.host,
             port: 8089,
@@ -610,7 +713,7 @@ class SplunkHandler extends EventEmitter {
             if (data[this.table].length == this.batchSize) {
               var result = this.evaluatorTree.evaluate(data, {});
               if (!result) {
-                  this.emit("end");
+                  //this.emit("end");
                   this.cancel();
                   return;
               }
@@ -628,7 +731,7 @@ class SplunkHandler extends EventEmitter {
             if (result && result.length > 1)
                 this.emit("data", this.pivot ? pivotTable(result): result);
             
-            console.log("End Evaluator took " + (Date.now()-begin));
+            //console.log("End Evaluator took " + (Date.now()-begin));
             //console.log("OUTPUT: " + result);
             data[this.table] = [];        
             this.emit("end");            
@@ -886,7 +989,7 @@ class DedupSolrHandler extends EventEmitter{
     }
 
     cancel() {
-        console.log("Destroying request");
+        //console.log("Destroying request");
 	this.inProgress = false;
     }
 
@@ -1240,7 +1343,7 @@ class ShardedSolrHandler extends EventEmitter{
     }
 
     cancel() {
-        console.log("Destroying request");
+        //console.log("Destroying request");
         if (this.request)
             this.request.abort();
     }
@@ -1393,7 +1496,7 @@ class SolrHandler extends EventEmitter{
     }
     
     cancel() {
-        console.log("Destroying request");
+        //console.log("Destroying request");
         if (this.request)
             this.request.abort();
     }
@@ -1487,6 +1590,7 @@ class S3Handler extends EventEmitter{
     chunkSize = 1*60*60*1000; // In milliseconds
     fileHandleMap = {};
     expiryTime = 5*60*1000; // When to expire a file and upload it
+    tableAlias = null;
 
     constructor(evaluatorTree, table, bucketPrefix, queryText, columns, timestampColumn, startTime, endTime, pivot, realTime) {
         super();
@@ -1497,13 +1601,14 @@ class S3Handler extends EventEmitter{
         this.bucketPrefix = bucketPrefix;
 
         this.table = table;
+        this.tableAlias = table;
         this.columns = columns;
         this.timestampColumn = timestampColumn;
         this.pivot = pivot;
         this.realTime = realTime;
 
-        this.startTime = Date.parse(startTime);
-        this.endTime = Date.parse(endTime);
+        this.startTime = typeof startTime === 'number' ? startTime : Date.parse(startTime);
+        this.endTime = typeof endTime === 'number' ? endTime : Date.parse(endTime);
 
         this.currentObjectPrefix = "";
         this.currentObjectTime = 0;
@@ -1513,9 +1618,13 @@ class S3Handler extends EventEmitter{
         this.inProgress = true;
     
     }
+
+    setTableAlias(alias) {
+        this.tableAlias = alias;
+    }
     
     cancel() {
-        console.log("Destroying request");
+        //console.log("Destroying request");
         if (this.request)
             this.request.abort();
     }
@@ -1599,7 +1708,7 @@ class S3Handler extends EventEmitter{
     
     process() {
         var data =  { "__type__": "table"};
-        data[this.table] = [];
+        data[this.tableAlias] = [];
 
         if (this.objectQueue.length == 0) {
             // Advance to next object name prefix
@@ -1609,10 +1718,12 @@ class S3Handler extends EventEmitter{
                 this.currentObjectTime += (24*60*60*1000);
             }
             else {
-                this.currentObjectTime = Math.floor(this.startTime/(this.chunkSize)) * (this.chunkSize);
+                //this.currentObjectTime = Math.floor(this.startTime/(this.chunkSize)) * (this.chunkSize);
+                this.currentObjectTime = Math.floor(this.startTime/(24*60*60*1000)) * (24*60*60*1000);
             }
 
             if (this.currentObjectTime > this.endTime) {
+                this.emit("end");
                 return ;
             }
             this.currentObjectPrefix = this.table + "/" + new Date(this.currentObjectTime).toISOString().slice(0, 10);
@@ -1631,7 +1742,7 @@ class S3Handler extends EventEmitter{
                         var key = data.Contents[i].Key;
                         var tsStart = this.table.length*2 + 1 + 10 + 1 + 1;
                         var temp = Date.parse(key.slice(tsStart, tsStart+24));
-                        if (temp >= this.currentObjectTime && temp < this.endTime) {
+                        if ((temp+this.chunkSize) > this.startTime && temp < this.endTime) {
                             this.objectQueue.push(data.Contents[i].Key);
                         }
                     }
@@ -1670,23 +1781,28 @@ class S3Handler extends EventEmitter{
               if (row[this.timestampColumn] > this.endTime) {
                   lr.close();
                   this.inProgress = false;
-                  data =  { "__type__": "table"};
-                  data[this.table] = [];
       
-                  var result = this.evaluatorTree.flush(data, []);
+                  var result = this.evaluatorTree.evaluate(data, {});
                   if (result && result.length > 1)
-                  this.emit("data", this.pivot ? pivotTable(result): result);
+                      this.emit("data", this.pivot == true ? pivotTable(result): result);
+                      
+                  data =  { "__type__": "table"};
+                  data[this.tableAlias] = [];
+      
+                  result = this.evaluatorTree.flush(data, []);
+                  if (result && result.length > 1)
+                    this.emit("data", this.pivot ? pivotTable(result): result);
           
-                  this.emit('end');
+                  //this.emit('end');
         
                   return;
               }
               else if (row[this.timestampColumn] < this.startTime) {
                   return;
               }
-              data[this.table].push(row);
+              data[this.tableAlias].push(row);
             
-              if (data[this.table].length == 10000) {
+              if (data[this.tableAlias].length == 10000) {
                 lr.pause();
                 var begin = Date.now()
                 var result = this.evaluatorTree.evaluate(data, {});
@@ -1694,7 +1810,7 @@ class S3Handler extends EventEmitter{
                     this.emit("data", this.pivot ? pivotTable(result): result);
                 console.log("Evaluator took " + (Date.now()-begin));
                 //console.log("OUTPUT: " + result);
-                data[this.table] = [];
+                data[this.tableAlias] = [];
                 lr.resume();
               }
           /*
@@ -1713,7 +1829,7 @@ class S3Handler extends EventEmitter{
                 var result = this.evaluatorTree.evaluate(data, {});
                 if (result && result.length > 1)
                     this.emit("data", this.pivot == true ? pivotTable(result): result);
-                data[this.table] = [];
+                data[this.tableAlias] = [];
     
                 this.process();
 
@@ -1758,7 +1874,7 @@ class MongoDBHandler extends EventEmitter{
     }
     
     cancel() {
-        console.log("Destroying request");
+        //console.log("Destroying request");
         if (this.request)
             this.request.abort();
     }
@@ -1777,17 +1893,368 @@ class MongoDBHandler extends EventEmitter{
             });
           });
     }
+}
 
+class UnifiedHandler extends EventEmitter{
+    database;
+    queryText;
+    client;
+    evaluatorTree;
+    chunkEvaluatorTree = null;
+    columns;
+    table;
+    timestampColumn;
+    currentEndTime;
+    timeIncrement;
+    inProgress;
+    request = null;
+    pivot = false;
+    unshardedTimeIncrement = 24*60*60*1000;
+    handler = null;
+    resultCacheFolder = "./result_cache"
+    resultCache = {};
+    resultCacheHeader = null;
+    queryTree;
+    resultCacheBucket = null;
+    s3 = null;
+
+    constructor(queryTree, evaluatorTree, database, table, handle, queryText, columns, timestampColumn, startTime, endTime, pivot, realTime) {
+        super();
+        this.queryTree = queryTree;
+        this.database = database;
+        Object.assign(this, handle);
+
+        this.evaluatorTree = evaluatorTree;
+        this.batchSize = 10000;
+        this.currentCursor = 0;
+        this.numFound = Number.MAX_SAFE_INTEGER;
+
+        if (startTime && endTime) {
+            this.currentStartTime = Date.parse(startTime);
+            this.currentEndTime = this.currentStartTime;
+            this.endTime = Date.parse(endTime);
+        }
+
+        this.table = table;
+        this.columns = columns;
+        this.timestampColumn = timestampColumn;
+        this.queryText = queryText;
+    
+        this.inProgress = true;
+        this.pivot = pivot;
+        this.realTime = realTime;
+
+        if (this.resultCacheBucket) {
+            this.s3 = new AWS.S3({apiVersion: '2006-03-01', httpOptions: { timeout: 10 * 60 * 1000 }});
+        }
+    }
+
+    createEvaluatorTree() {
+        this.chunkEvaluatorTree = new Generic(-1, "", "", "", false);
+        traverse(this.queryTree, 0, this.chunkEvaluatorTree);
+    }
+
+    getHandler(startTime, endTime) {
+        var assignedTier = null;
+        for (var i = 0; i < this.tiers.length; ++i) {
+            var actualRetentionStartTime = Date.now() - this.tiers[i]["retentionStart"] * this.tiers[i]["unit"];
+            if (startTime > actualRetentionStartTime) {
+                // startTime falls in the range of this tier
+                assignedTier =  this.tiers[i]["name"];
+                break;
+            }
+            else if (this.tiers[i]["retentionStart"] == 0) {
+                // Found tier with unlimited retention
+                assignedTier = this.tiers[i]["name"];
+                break;
+            }
+        }
+        // Adjust endTime to the tier's retention end time if needed
+        if (this.tiers[i]["retentionEnd"] != 0) {
+            var revisedEndTime = (Math.floor(Date.now()/this.unit)*this.unit) - this.tiers[i]["retentionEnd"] * this.tiers[i]["unit"];
+            if (endTime > revisedEndTime)
+                endTime = revisedEndTime;
+        }
+        if (assignedTier) {
+            this.createEvaluatorTree();
+            var handler = createHandler(this.database.Tables[assignedTier].Type, this.chunkEvaluatorTree, assignedTier,
+                this.database.Tables[assignedTier].Handle, this.queryText, this.columns, this.timestampColumn,
+                startTime, endTime, this.pivot, this.realTime);
+            // Since the query refers to the unified table we need the individual handlers to use the unified table
+            // as the reference for data.
+            handler.setTableAlias(this.table);
+            return handler;
+        }
+        else {
+            return null;
+        }
+    }
+
+    cancel() {
+        //console.log("Destroying request");
+        if (this.request)
+            this.request.abort();
+    }
+
+    getQueryObjectFolder() {
+        return "queryCache/" + new Date(this.currentStartTime).toISOString().slice(0, 10);
+    }
+
+    getQueryHash() {
+        var tree = this.evaluatorTree.toJSON();
+        var treeJSON = JSON.stringify(tree);
+        var resultId = treeJSON + this.currentStartTime + this.currentEndTime;
+        var md5Hash = crypto.createHash('md5').update(resultId).digest("hex");
+
+        return md5Hash;
+    }
+
+    uploadToS3(objectPath, localFileName) {
+        // Gzip the file first
+        const gzip = zlib.createGzip();
+        const fs = require('fs');
+        const inp = fs.createReadStream(localFileName);
+        const out = fs.createWriteStream(localFileName + '.gz');
+
+        inp.pipe(gzip).pipe(out).on('finish', () => {
+
+            const gzInp = fs.createReadStream(localFileName + '.gz');
+            const bucketParams = {
+                Bucket : this.resultCacheBucket,
+                Key: objectPath + ".gz",
+                Body: gzInp
+            };
+
+            var options = { partSize: 5 * 1024 * 1024, queueSize: 10 };  
+
+            this.s3.upload(bucketParams, options, (err, data) => {  
+                console.log('Completed ' + err);  
+                //fs.unlink(localFileName, () => { console.log("File removed"); });
+                fs.unlink(localFileName + '.gz', () => { console.log("File removed"); });
+            });   
+        });
+    }
+
+    persistResultCache() {
+
+        // Save the state
+        var state = {};
+        state = this.chunkEvaluatorTree.getState(state);
+        var stateJson  = JSON.stringify(state);
+        var resultCacheJson = JSON.stringify([this.resultCacheHeader, Object.values(this.resultCache)]);
+
+        var md5Hash = this.getQueryHash();
+        var stateFile = this.resultCacheFolder + "/" + md5Hash + "_state.json";
+        //var resultFile = this.resultCacheFolder + "/" + md5Hash + "_result.json";
+        var stateObjectPath = null;
+        //var resultObjectPath = null;
+        if (this.resultCacheBucket != null) {
+            stateObjectPath = this.getQueryObjectFolder() + "/" + md5Hash + "_state.json";
+            //resultObjectPath = this.getQueryObjectFolder() + "/" + md5Hash + "_result.json";
+        }
+
+        fs.writeFile(this.resultCacheFolder + "/" + md5Hash + "_state.json", stateJson, (err) => { 
+            if (err) {
+                console.log(err);
+            }
+            else if (stateObjectPath) {
+                this.uploadToS3(stateObjectPath, stateFile);
+            }
+        });
+        /*
+        fs.writeFile(this.resultCacheFolder + "/" + md5Hash + "_result.json", resultCacheJson, (err) => { 
+            if (err) {
+                console.log(err);
+            }
+            else if (resultObjectPath) {
+                this.uploadToS3(resultObjectPath, stateFile);
+            }
+        });
+        */
+
+    }
+
+    updateResultCache(result) {
+        if (result[0]["__key__"] == null)
+            return;
+
+        this.resultCacheHeader = result[0];
+        for (var i=1; i < result.length; ++i) {
+            this.resultCache[result[i]["__key__"]] = result[i];
+        }
+    }
+        
     process() {
         var data =  { "__type__": "table"};
         data[this.table] = [];
 
-        console.log("Running with " + this.url);
+        if (this.currentEndTime >= this.endTime) {
+            /*
+            data =  { "__type__": "table"};
+            data[this.table] = [];
+            if (this.chunkEvaluatorTree) {
+                var result = this.chunkEvaluatorTree.flush(data, []);
+
+                if (result && result.length > 1) {
+                    this.updateResultCache(result);
+                    this.emit("data", this.pivot ? pivotTable(result): result);
+                }
+
+                this.persistResultCache();
+            }
+            */
+            this.emit("end");
+            return;
+        }
+        else {
+            this.currentStartTime = this.currentEndTime;
+            if (this.timeIncrement != 0)
+                this.currentEndTime = Math.floor((this.currentStartTime + this.timeIncrement)/this.timeIncrement)*this.timeIncrement;
+
+            if (this.currentEndTime > this.endTime)
+                this.currentEndTime = this.endTime;
+        }
+
+        // Check if the results can be served from cache
+        var md5Hash = this.getQueryHash();
+
+
+        if (this.resultCacheBucket) {
+            var writeStream = fs.createWriteStream(this.resultCacheFolder + "/" + md5Hash + "_state.json");
+            var params = {
+                Bucket: this.resultCacheBucket, 
+                Key: this.getQueryObjectFolder() + "/" + md5Hash + "_state.json.gz"
+               };
+            this.s3.getObject(params).createReadStream()
+                .on('error', (err) => { 
+                    // Not in S3 cache
+                    // Run the query
+                    fs.unlink(this.resultCacheFolder + "/" + md5Hash + "_state.json", () => { });
+                    this.processBatch();
+                    // console.log('err'); 
+                })
+                .pipe(zlib.createGunzip()).pipe(writeStream)
+                .on('finish', (err) => {
+                    var stateJSON = fs.readFileSync(this.resultCacheFolder + "/" + md5Hash + "_state.json");
+                    var state = JSON.parse(stateJSON);
+                    this.evaluatorTree.loadState(state);
+        
+                    //var resultJSON = fs.readFileSync(this.resultCacheFolder + "/" + md5Hash + "_result.json");
+                    //var result  = JSON.parse(resultJSON);
+        
+        
+                    var data =  { "__type__": "table"};
+                    data[this.tableAlias] = [];
+        
+                    var result = this.evaluatorTree.flush(data, []);
+        
+                    this.emit('data', result);
+                    this.process();
+        
+                });
+            return;
+        }
+    }
+
+    processBatch() {
+        var md5Hash = this.getQueryHash();
+
+        if (fs.existsSync(this.resultCacheFolder + "/" + md5Hash + "_state.json")) /* &&
+            fs.existsSync(this.resultCacheFolder + "/" + md5Hash + "_result.json")) */ {
+            
+            var stateJSON = fs.readFileSync(this.resultCacheFolder + "/" + md5Hash + "_state.json");
+            var state = JSON.parse(stateJSON);
+            this.evaluatorTree.loadState(state);
+
+            //var resultJSON = fs.readFileSync(this.resultCacheFolder + "/" + md5Hash + "_result.json");
+            //var result  = JSON.parse(resultJSON);
+
+
+            var data =  { "__type__": "table"};
+            data[this.tableAlias] = [];
+
+            var result = this.evaluatorTree.flush(data, []);
+
+            this.emit('data', result);
+            this.process();
+            return;
+        }
+        var handler = this.getHandler(this.currentStartTime, this.currentEndTime);
+        if (handler) {
+            handler.on('end', () => {
+                this.persistResultCache();
+
+                // Merge this chunk results with the master evaluator tree and flush the results
+                var state = this.chunkEvaluatorTree.getState({});
+                this.evaluatorTree.loadState(state);
+                
+                var data =  { "__type__": "table"};
+                data[this.tableAlias] = [];
+                var result = this.evaluatorTree.flush(data, []);
+                this.emit('data', result);
+                
+                this.process();
+            });
+            handler.on('data', (result) => {
+                //this.updateResultCache(result);
+                if (this.realTime || (result[0]["__key__"] == null)) {
+                    this.emit('data', result);
+                }
+            });
+            handler.process();
+        }
+        return handler;
+
+    }
+
+    flush() {
     }
 }
 
+function createHandler(type, evaluatorTree, tableName, handle, queryText, columns, timestampColumn, startTime, endTime, pivot, realTime) {
+    var handler = null;
+
+    if (type == "solr") {
+        handler = new SolrHandler(evaluatorTree, tableName, handle, queryText, 
+            columns, timestampColumn, startTime, endTime, pivot, realTime);
+    }
+    else if (type == "shardedsolr") {
+        handler = new ShardedSolrHandler(evaluatorTree, tableName, handle, queryText, 
+            columns, timestampColumn, startTime, endTime, pivot, realTime);
+    }
+    else if (type == "dedupsolr") {
+        handler = new DedupSolrHandler(evaluatorTree, tableName, handle, queryText, 
+            columns, timestampColumn, startTime, endTime, pivot, realTime);
+    }
+    else if (type == "file") {
+        handler = new FileHandler(evaluatorTree, tableName, handle, 
+            columns, pivot, realTime);
+    }
+    else if (type == "kafka") {
+        handler = new KafkaHandler(evaluatorTree, tableName, handle, 
+            columns, startTime, endTime, pivot, realTime);
+    }
+    else if (type == "s3") {
+        handler = new S3Handler(evaluatorTree, tableName, handle, queryText, 
+            columns, timestampColumn, startTime, endTime, pivot, realTime);
+    }
+    else if (type == "splunk") {
+        handler = new SplunkHandler(evaluatorTree, tableName, handle, queryText, 
+            columns, timestampColumn, startTime, endTime, pivot, realTime);
+    }
+    /*
+    else if (type == "unified") {
+        handler = new UnifiedHandler(evaluatorTree, db, table.Handle, usedTables[j][1], 
+            table.OrderedColumns, timestampColumn, startTime, endTime, pivot, realTime);
+    }
+    */
+
+    return handler;
+
+}
+
 exports.KustoExecutor = class KustoExecutor extends EventEmitter {
-    execute(contextConfigStr, database, query, timestampColumn, startTime, endTime, pivot, realTime) {
+    execute(contextConfigStr, database, queryText, timestampColumn, startTime, endTime, pivot, realTime) {
         var contextConfig = JSON.parse(contextConfigStr);
         var tables = [];
         for (var table of Object.keys(contextConfig.Databases[database].Tables)) {
@@ -1803,7 +2270,7 @@ exports.KustoExecutor = class KustoExecutor extends EventEmitter {
         // For now take the first database as the database on which queyr will be run
         var globals = Kusto.Language.GlobalState.Default.WithDatabase(db);
 
-        var query = Kusto.Language.KustoCode.ParseAndAnalyze(query, globals);
+        var query = Kusto.Language.KustoCode.ParseAndAnalyze(queryText, globals);
 
         var evaluatorTree = new Generic(-1, "", "", "", false)
 
@@ -1875,10 +2342,14 @@ exports.KustoExecutor = class KustoExecutor extends EventEmitter {
                 handler = new SplunkHandler(evaluatorTree, usedTables[j][0], table.Handle, usedTables[j][1], 
                     table.OrderedColumns, timestampColumn, startTime, endTime, pivot, realTime);
             }
+            else if (table.Type == "unified") {
+                handler = new UnifiedHandler(query.Syntax, evaluatorTree, contextConfig.Databases[database], usedTables[j][0], table.Handle, usedTables[j][1], 
+                    table.OrderedColumns, timestampColumn, startTime, endTime, pivot, realTime);
+            }
+
             if (handler) {
                 handler.on('end', () => { 
                     this.emit('end');
-                    //evaluatorTree.printStats();
                 });
                 handler.on('data', (result) => {
 
@@ -1896,7 +2367,6 @@ exports.KustoExecutor = class KustoExecutor extends EventEmitter {
             }
             return handler;
         }
-
         return null;
     }
 }

@@ -43,19 +43,20 @@ wsServer.on('request', function(request) {
   connection.on('message', function(message) {
     const reqData = JSON.parse(message.utf8Data);
     const pivot = reqData.pivot;
-    const realTime = reqData.realTime;
-    const database = reqData.database;
+    const realTime = reqData.realTime || false
+    const topic = reqData.additionalParams
+    const database = 'file';
 
     console.log(reqData)
 
-    log.info("Running panel id: " + reqData.panelId + ", query: ", JSON.stringify(reqData.query) + 
-    ", database: " + database + ", pivot: " + pivot + ", realTime: " + realTime );
+    console.log("Running panel id: " + reqData.panelId + ", query: ", JSON.stringify(reqData.query) + 
+    ", database: " + database + ", pivot: " + pivot + ", realTime: " + realTime + ", topic:" + topic );
 
-    connection.handler = executeQuery(reqData, connection, database, pivot, realTime);
+    connection.handler = executeQuery(reqData, connection, database, pivot, realTime, topic);
   })
 
   connection.on('close', function(reasonCode, description) {
-    log.info('Client has disconnected. Reason: ' + reasonCode + ' Description: ' + description);
+    console.log('Client has disconnected. Reason: ' + reasonCode + ' Description: ' + description);
     
     if (connection.handler) {
       connection.handler.cancel();
@@ -70,7 +71,7 @@ wsServer.on('request', function(request) {
   });
 });
 
-function executeQuery(query, connection, database, pivot, realTime) {
+function executeQuery(query, connection, database, pivot, realTime, additionalParams) {
   var ex = new kustoExecutor();
 
   ex.on("data", (result) => { 
@@ -86,11 +87,14 @@ function executeQuery(query, connection, database, pivot, realTime) {
   ex.on("end", () => { console.log("Completed"); });
   const fromTime = new Date(query.from);
   const toTime = new Date(query.to);
-  // console.log("Conf: " + JSON.stringify(queryConf));
-  // console.log("DB: " + database);
-  // console.log("Query: " + query.query);
-  // console.log("Time: " + fromTime.toISOString())
-  return ex.execute(JSON.stringify(queryConf), database, query.query, "timestamp", fromTime.toISOString(), toTime.toISOString(), pivot, realTime);
+
+  let config = JSON.stringify(queryConf);
+  if (additionalParams) {
+    console.log("Replacing topic with " + additionalParams);
+    config = config.replace('__TOPIC__', additionalParams);
+  }
+
+  return ex.execute(config, database, query.query, "timestamp", fromTime.toISOString(), toTime.toISOString(), pivot, realTime);
 }
 
 function getSchema() {

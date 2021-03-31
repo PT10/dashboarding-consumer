@@ -1,11 +1,12 @@
 <div [ngStyle]="{'background-color': 'rgb(58, 65, 35)', 'color': 'white', 'height': '1300px', 'padding-left': '10px'}">
-    <h3>
-      Log Search
-    </h3>
+  <h3>
+    Log Search
+  </h3>
   <div style="border-top: 1px solid white; padding-top: 5px;">
-    <lib-dashboard [dashboards]="myDashServ.dashboards" [hideHeader]="false" [rowHeight]="60"
+    <lib-dashboard [dashboards]="myDashServ.dashboards" [hideHeader]="true" [rowHeight]="60"
     (dashboardChange)="myCallback()" (onEvent)="processEvent($event)"></lib-dashboard>
     <!-- <lib-dashboard [dashboards]="myDashServ.dashboards" (dashboardChange)="myCallback()"></lib-dashboard> -->
   </div>
 </div>
+<p-toast position="top-center" key="tc" [style]="{marginTop: '80px'}"></p-toast>
 
