@@ -10,3 +10,7 @@ body {
 gridster {
   position: inherit !important;
 }
+
+.ui-paginator {
+  text-align: right ! important
+  }

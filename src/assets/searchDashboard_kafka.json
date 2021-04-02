@@ -3,9 +3,9 @@
       "name": "Default dashboard",
       "data": [
         {
-          "cols": 10,
-          "rows": 4,
-          "y": 1,
+          "cols": 15,
+          "rows": 3,
+          "y": 2,
           "x": 0,
           "name": "Dataset",
           "panelId": "barchart",
@@ -15,7 +15,7 @@
             "sourceType": "kafka",
             "searchQuery": "KafkaExport",
             "loadStatus": "Loading",
-            "searchQueryExtention": "| summarize count=count() by onesec=floor(['time'], 1s)",
+            "searchQueryExtention": "| summarize count=count() by bucket=floor(['time'], 1s)",
             "realtime": true,
             "showHeader": false,
             "additionalParams": "",
@@ -44,19 +44,19 @@
                 "gridIndex": 0
               },
               "grid": {
-                "bottom": "25%"
+                "bottom": "35%"
               },
               "seriesMerge": true,
               "uniqueMergeKeys": [
-                "onesec"
+                "bucket"
               ],
-              "timeAxisSortField": "onesec",
+              "timeAxisSortField": "bucket",
               "series": [
                 {
                   "type": "bar",
                   "connectNulls": true,
                   "encode": {
-                    "x": "onesec",
+                    "x": "bucket",
                     "y": "count"
                   }
                 }
@@ -64,7 +64,7 @@
             },
             "dataset": {
               "dimensions": [
-                "onesec",
+                "bucket",
                 "count"
               ],
               "source": [{}]
@@ -73,7 +73,7 @@
         },
         {
           "cols": 10,
-          "rows": 1,
+          "rows": 2,
           "y": 0,
           "x": 0,
           "name": "Search",
@@ -82,19 +82,18 @@
           "chartOptions": {
             "source": "sonicwall",
             "sourceType": "kafka",
-            "searchQuery": "",
+            "searchQuery": "sonicwall | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \"]+)|(\"[^\"]+\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\"', '', pairs[1])))) | evaluate bag_unpack(bag)  | extend ['time']=todatetime(['time']) | project ['time'], src, dst, srcMac, dstMac",
             "searchQueryPrefix": ".export to table KafkaExport <| ",
             "additionalParams": "",
-            "timewindow": [],
+            "timeWindow": [],
             "realtime": false,
             "showHeader": false,
-            "subscriptions": ["$var1(searchQuery)", "$timewindow(timeWindow)"],
+            "subscriptions": ["$var1()", "$timewindow(timeWindow)"],
             "chartConfig": {
               "chartType": "searchbar",
               "emptyText": "Query",
               "buttonText": "Search",
-              "value": "",
-              "defaultValue": "sonicwall | project message = extract_all(@'^\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[\\w\\.]+\\s+(.+)', line) | project pairs = extract_all(@'([^ =]+)=(([^ \"]+)|(\"[^\"]+\"))', dynamic([1, 2]), message[0]) | mv-apply pairs on (summarize bag=make_bag(pack(tostring(pairs[0]), replace('\"', '', pairs[1])))) | evaluate bag_unpack(bag)  | extend ['time']=todatetime(['time']) | project ['time'], src, dst, srcMac, dstMac",
+              "rows": 5,
               "onEvent": "$var1",
               "onQueryExecuted": "$var2"
             },
@@ -106,7 +105,7 @@
         {
           "cols": 15,
           "rows": 12,
-          "y": 5,
+          "y": 3,
           "x": 0,
           "name": "Table",
           "panelId": "rawTable",
@@ -125,6 +124,8 @@
               "chartType": "table",
               "showHeader": true,
               "pagination": true,
+              "paginatorPosition": "top",
+              "alwaysShowPaginator": false,
               "globalSearch": false,
               "columnSearch": false,
               "pageSize": 20,
@@ -154,10 +155,10 @@
             "searchQuery": "",
             "realtime": false,
             "showHeader": false,
+            "timeWindow": [],
             "chartConfig": {
               "chartType": "timerange",
               "label": "Time range",
-              "value": ["2018-08-26T15:02:25.000Z", "2018-08-28T15:02:25.000Z"],
               "defaultValue": "NOW-15m",
               "onEvent": "$timewindow"
             },
@@ -167,7 +168,7 @@
           }
         }, {
           "cols": 5,
-          "rows": 4,
+          "rows": 1,
           "y": 1,
           "x": 10,
           "name": "Single",
@@ -186,7 +187,7 @@
             "chartConfig": {
               "chartType": "single",
               "seriesName": "Total",
-              "font-size": "120px",
+              "font-size": "30px",
               "font-weight": "600",
               "seriesMerge": true,
               "uniqueMergeKeys": [

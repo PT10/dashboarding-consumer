@@ -10,11 +10,15 @@ export class DataService {
   constructor(private http: HttpClient) {}
 
   getDashboardData() {
-    //return this.http.get('/assets/searchDashboard_kafka_onlyRead.json');
-    return this.http.get('/assets/searchDashboard_kafka.json');
+    //return this.http.get('assets/searchDashboard_kafka_onlyRead.json');
+    return this.http.get('assets/searchDashboard_kafka.json');
   }
 
   getDashboards() {
     return JSON.parse(JSON.stringify(this.dashboards));
+  }
+
+  getWebsocketUrl() {
+    return this.http.get('assets/urls.json');
   }
 }

@@ -12,16 +12,9 @@ import { MessageService } from 'primeng/components/common/messageservice';
 })
 export class AppComponent implements AfterViewInit {
   title = 'dashConsumeNew';
-  startTime: any;
-
-  sub1;
-  sub2;
-  cnt;
-  variables = {};
-
-  dateVal;
 
   private eventList= {};
+  private wsUrl;
 
   private liveConections = {}
 
@@ -29,8 +22,12 @@ export class AppComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.myDashServ.getDashboardData().subscribe((data: any) => {
-      this.myDashServ.dashboards = data;
-      this.addSubscriptios();
+      this.myDashServ.getWebsocketUrl().subscribe((urlData: any) => {
+        this.wsUrl = urlData['websocket_url'];
+        this.myDashServ.dashboards = data;
+        this.addSubscriptios();
+      })
+      
     }, error => {
       alert("Error");
     })
@@ -53,22 +50,25 @@ export class AppComponent implements AfterViewInit {
             subject: subject,
             observable: subject.asObservable().subscribe(d => {
               let changeDetected = false;
-              const params = paramNames.split(',');
-              if (panel.chartOptions[params[0].trim()] !== d.data.data) {
-                panel.chartOptions[params[0].trim()] = d.data.data;
-                changeDetected = true;
-              }
 
-              if (d.data.timeWindow && 
-                params[1] && params[1].trim() === 'timeWindow' &&
-                JSON.stringify(panel.chartOptions['timeWindow']) !== JSON.stringify(d.data.timeWindow)) {
-                  panel.chartOptions['timeWindow'] = d.data.timeWindow;
+              if ( paramNames) {
+                const params = paramNames.split(',');
+                if (panel.chartOptions[params[0].trim()] !== d.data.data) {
+                  panel.chartOptions[params[0].trim()] = d.data.data;
                   changeDetected = true;
+                }
+
+                if (d.data.timeWindow && 
+                  params[1] && params[1].trim() === 'timeWindow' &&
+                  JSON.stringify(panel.chartOptions['timeWindow']) !== JSON.stringify(d.data.timeWindow)) {
+                    panel.chartOptions['timeWindow'] = d.data.timeWindow;
+                    changeDetected = true;
+                }
               }
 
-              if (!changeDetected) {
-                return; // No change in values
-              }
+              // if (!changeDetected) {
+              //   return; // No change in values
+              // }
 
               // Clear previous data
               panel.chartOptions.dataset.source = []
@@ -191,7 +191,7 @@ export class AppComponent implements AfterViewInit {
 
   private getSocketConn(): WebSocketSubject<any> {
     return webSocket({
-      url: "ws://localhost:5001",
+      url: this.wsUrl,
       openObserver: {
         next: () => {
             console.log('connection ok');
