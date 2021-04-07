@@ -104,7 +104,7 @@ export class AppComponent implements AfterViewInit {
                       c["sortable"]  = true
                       c["searchable"] = false
                       c["resizable"] = true
-                      c["width"] = "25%"
+                      c["width"] = ['msg', 'message'].includes(c.name) ? '50%' : '10%'
                     });
 
                     panel.chartOptions.chartConfig.columns = msg.data[0]['__header__'];
@@ -128,7 +128,7 @@ export class AppComponent implements AfterViewInit {
                               sortable: true,
                               searchable: false,
                               resizable: true,
-                              width: "25%"
+                              width: ['msg', 'message'].includes(k) ? '75%' : '25%'
                           }))
                       }
                     }

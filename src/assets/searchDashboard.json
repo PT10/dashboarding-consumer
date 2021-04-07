@@ -13,7 +13,7 @@
         "chartOptions": {
           "source": "sonicwall",
           "sourceType": "kafka",
-          "searchQuery": "index",
+          "searchQuery": "",
           "searchQueryExtention": "| summarize count=count() by onesec=floor(timestamp, 2s)",
           "realtime": false,
           "showHeader": false,
@@ -80,14 +80,15 @@
         "chartOptions": {
           "source": "sonicwall",
           "sourceType": "kafka",
-          "searchQuery": "",
+          "searchQuery": "index",
+          "timeWindow": [],
           "realtime": false,
           "showHeader": false,
           "chartConfig": {
             "chartType": "searchbar",
             "emptyText": "Query",
             "buttonText": "Search",
-            "value": "index",
+            "rows": 2,
             "onEvent": "$var1"
           },
           "dataset": {
@@ -106,7 +107,7 @@
         "chartOptions": {
           "source": "sonicwall",
           "sourceType": "kafka",
-          "searchQuery": "index",
+          "searchQuery": "",
           "timeWindow": [],
           "realtime": false,
           "showHeader": false,
@@ -136,24 +137,25 @@
         "y": 3,
         "x": 8,
         "name": "Time",
-        "panelId": "timewindow",
-        "chartLibrary": "primeng",
-        "chartOptions": {
-          "source": "sonicwall",
-          "sourceType": "kafka",
-          "searchQuery": "",
-          "realtime": false,
-          "showHeader": false,
-          "chartConfig": {
-            "chartType": "timerange",
-            "label": "Time range",
-            "value": [],
-            "onEvent": "$timewindow"
-          },
-          "dataset": {
-            "source": []
+          "panelId": "timewindow",
+          "chartLibrary": "primeng",
+          "chartOptions": {
+            "source": "sonicwall",
+            "sourceType": "kafka",
+            "searchQuery": "",
+            "realtime": false,
+            "showHeader": false,
+            "timeWindow": [],
+            "chartConfig": {
+              "chartType": "timerange",
+              "label": "Time range",
+              "defaultValue": "NOW-15m",
+              "onEvent": "$timewindow"
+            },
+            "dataset": {
+              "source": []
+            }
           }
-        }
       }, {
         "cols": 5,
         "rows": 4,
@@ -165,7 +167,7 @@
         "chartOptions": {
           "source": "sonicwall",
           "sourceType": "kafka",
-          "searchQuery": "index",
+          "searchQuery": "",
           "searchQueryExtention": "| extend dummy = '1' | summarize count=count() by dummy",
           "showHeader": false,
           "subscriptions": ["$var1(searchQuery)", "$timewindow(timeWindow)"],

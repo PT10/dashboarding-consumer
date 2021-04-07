@@ -297,8 +297,8 @@ class KafkaHandler extends EventEmitter {
     }
     
     callbackConsume(err, messages) {
-        console.log("In consumerCallback " + messages.length);
-        console.log("In consumerCallback Error " + err);
+        // console.log("In consumerCallback " + messages.length);
+        // console.log("In consumerCallback Error " + err);
 
         this.currentCount += messages.length;
         if (messages.length > 0)

@@ -21,7 +21,7 @@
     "@angular/router": "~8.2.5",
     "@bolt-analytics/ngx-dashboard": "0.0.19",
     "@bolt-analytics/ngx-dashboard-echarts": "0.0.12",
-    "@bolt-analytics/ngx-dashboard-primeng": "0.0.7",
+    "@bolt-analytics/ngx-dashboard-primeng": "0.0.9",
     "angular-gridster2": "^8.4.2",
     "bootstrap": "^3.3.7",
     "echarts": "^5.0.2",
